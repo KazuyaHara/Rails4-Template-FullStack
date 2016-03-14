@@ -19,6 +19,7 @@ puts "\n"
 # for Bullet
 puts "Adding Bullet settings ..."
 insert_into_file 'config/environments/development.rb',%(
+
   # notify N+1 problem
   config.after_initialize do
     Bullet.enable  = true
