@@ -20,3 +20,4 @@ puts " Rails4 FullStack Application Template"
 puts "=========================================================\n"
 
 copy_static_file 'Gemfile'
+apply "#{@partials}/_git.rb"
