@@ -11,8 +11,9 @@ puts "\n========================================================="
 puts " Rails4 FullStack Application Template Setup"
 puts "=========================================================\n"
 
-# Commit Gemfile.lock
+puts "Commit Gemfile.lock ..."
 git :add => '.'
 git :commit => "-aqm 'Install bundled gems.'"
+puts "\n"
 
 apply "#{@partials}/_rspec.rb"
