@@ -136,7 +136,7 @@ SitemapGenerator::Sitemap.sitemaps_host = ENV['SITEMAP_HOST']
 SitemapGenerator::Sitemap.create do
 end
 CODE
-insert_into_file 'config.routes.rb',%(
+insert_into_file 'config/routes.rb',%(
   get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?), after: 'Rails.application.routes.draw do'
 puts "\n"
 
