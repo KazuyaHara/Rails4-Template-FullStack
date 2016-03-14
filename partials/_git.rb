@@ -1,5 +1,3 @@
-# Create a .gitignore file and a new local repository, commit everything
-
 puts "Initializing new Git repo ..."
 
 remove_file '.gitignore'
