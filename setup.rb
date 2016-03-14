@@ -18,4 +18,4 @@ puts "\n"
 
 apply "#{@partials}/_database.rb"
 apply "#{@partials}/_rspec.rb"
-apply "#{@partials}/_essentials.rb"
+apply "#{@partials}/_essentials.rb" # should run after '_rspec.rb'
