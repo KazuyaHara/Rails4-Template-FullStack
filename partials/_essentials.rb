@@ -1,14 +1,6 @@
 # for dotenv
 puts "Add .env file ..."
-file '.env', <<-CODE.gsub(/^ {2}/, '')
-# S3 Setting
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
-S3_PUBLIC_BUCKET_NAME = ''
-S3_PRIVATE_BUCKET_NAME = ''
-S3_REGION = 'ap-northeast-1'
-SITEMAP_HOST = 'http://yourbucket.s3-ap-northeast-1.amazonaws.com'
-CODE
+copy_static_file ".env"
 puts "\n"
 
 # for annotate
@@ -63,13 +55,7 @@ puts "\n"
 # for meta-tags
 puts "Setting meta-tags ..."
 gsub_file 'app/views/layouts/application.html.haml', /%title Appname/, "= render partial: 'layouts/meta_tags'"
-file 'app/views/layouts/_meta_tags.html.haml', <<-CODE.gsub(/^ {2}/, '')
-%meta{charset: 'UTF-8'}
-%meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
-%meta{content: 'NOYDIR', name: 'ROBOTS'}
-%meta{content: 'NOODP', name: 'ROBOTS'}
-= display_meta_tags default_meta_tags
-CODE
+copy_static_file "app/views/layouts/_meta_tags.html.haml"
 insert_into_file 'app/helpers/application_helper.rb',%(
   def default_meta_tags
     {
@@ -119,23 +105,7 @@ puts "\n"
 
 # for sitemap_generator
 puts "Installing sitemap_generator ..."
-file 'config/sitemap.rb', <<-CODE.gsub(/^ {2}/, '')
-# Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "add site url"
-SitemapGenerator::Sitemap.public_path = 'tmp/'
-SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
-
-SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
-  fog_provider: 'AWS',
-  aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-  aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-  fog_directory: ENV['S3_PUBLIC_BUCKET_NAME'],
-  fog_region: ENV['S3_REGION'])
-SitemapGenerator::Sitemap.sitemaps_host = ENV['SITEMAP_HOST']
-
-SitemapGenerator::Sitemap.create do
-end
-CODE
+copy_static_file "config/sitemap.rb"
 insert_into_file 'config/routes.rb',%(
   get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?), after: 'Rails.application.routes.draw do'
 run "bundle exec annotate --routes"
