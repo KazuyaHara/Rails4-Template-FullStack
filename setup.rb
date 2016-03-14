@@ -10,3 +10,5 @@
 puts "\n========================================================="
 puts " Rails4 FullStack Application Template Setup"
 puts "=========================================================\n"
+
+apply "#{@partials}/_rspec.rb"
