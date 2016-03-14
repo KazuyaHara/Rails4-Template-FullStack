@@ -40,7 +40,7 @@ puts "\n"
 
 # for RSpec ActiveJob
 puts "Setup RSpec ActiveJob ..."
-insert_into_file 'coifng/environments/test.rb',%(
+insert_into_file 'config/environments/test.rb',%(
 
 # for RSpec ActiveJob
 config.active_job.queue_adapter = :test
