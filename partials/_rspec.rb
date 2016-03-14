@@ -9,8 +9,7 @@ puts "\n"
 
 puts "Updating spec/rails_helper ..."
 insert_into_file 'spec/rails_helper.rb',%(
-require 'shoulda/matchers'
-), after: '# Add additional requires below this line. Rails is not loaded until this point!'
+require 'shoulda/matchers'), after: '# Add additional requires below this line. Rails is not loaded until this point!'
 insert_into_file 'spec/rails_helper.rb',%(
   config.include FactoryGirl::Syntax::Methods
 ), after: 'RSpec.configure do |config|'
