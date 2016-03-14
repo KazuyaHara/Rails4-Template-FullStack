@@ -89,16 +89,16 @@ insert_into_file 'app/helpers/application_helper.rb',%(
 remove_file 'config/settings.yml'
 file 'config/settings.yml', <<-CODE.gsub(/^ {2}/, '')
 site:
-  name: "#{app_name}"
-  page_description: ""
+    name: "#{app_name}"
+    page_description: ""
 
-  meta:
-    og:
-      type: 'website'
-      image: 'sample.jpg'
-    twitter:
-      card: 'summary_large_image'
-      site: '@XXXX'
+    meta:
+      og:
+        type: 'website'
+        image: 'sample.jpg'
+      twitter:
+        card: 'summary_large_image'
+        site: '@XXXX'
 CODE
 puts "\n"
 
