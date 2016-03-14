@@ -1,6 +1,14 @@
 # for dotenv
 puts "Add .env file ..."
-add_file ".env"
+file '.env', <<-CODE.gsub(/^ {2}/, '')
+# S3 Setting
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+S3_PUBLIC_BUCKET_NAME = ''
+S3_PRIVATE_BUCKET_NAME = ''
+S3_REGION = 'ap-northeast-1'
+SITEMAP_HOST = 'http://yourbucket.s3-ap-northeast-1.amazonaws.com'
+CODE
 puts "\n"
 
 # for annotate
@@ -100,6 +108,36 @@ site:
         card: 'summary_large_image'
         site: '@XXXX'
 CODE
+puts "\n"
+
+# for seed_fu
+puts "Setting seed_fu ..."
+add_file "db/fixtures/csv/.keep"
+add_file "db/fixtures/development/csv/.keep"
+add_file "db/fixtures/production/csv/.keep"
+puts "\n"
+
+# for sitemap_generator
+puts "Installing sitemap_generator ..."
+file 'config/sitemap.rb', <<-CODE.gsub(/^ {2}/, '')
+# Set the host name for URL creation
+SitemapGenerator::Sitemap.default_host = "add site url"
+SitemapGenerator::Sitemap.public_path = 'tmp/'
+SitemapGenerator::Sitemap.sitemaps_path = 'sitemaps/'
+
+SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new(
+  fog_provider: 'AWS',
+  aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+  aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+  fog_directory: ENV['S3_PUBLIC_BUCKET_NAME'],
+  fog_region: ENV['S3_REGION'])
+SitemapGenerator::Sitemap.sitemaps_host = ENV['SITEMAP_HOST']
+
+SitemapGenerator::Sitemap.create do
+end
+CODE
+insert_into_file 'config.routes.rb',%(
+  get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?), after: 'Rails.application.routes.draw do'
 puts "\n"
 
 git :add => "."
