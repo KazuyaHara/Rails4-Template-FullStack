@@ -21,4 +21,5 @@ puts "=========================================================\n"
 
 copy_static_file 'Gemfile'
 apply "#{@partials}/_cleanup.rb"
+apply "#{@partials}/_application.rb"
 apply "#{@partials}/_git.rb"
