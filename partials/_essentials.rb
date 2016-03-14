@@ -102,7 +102,6 @@ site:
 CODE
 puts "\n"
 
-git :init
 git :add => "."
 git :commit => "-aqm 'install essential gems'"
 
