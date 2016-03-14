@@ -34,3 +34,13 @@ puts "\n"
 puts "Converting erb to haml ..."
 run 'bundle exec rake haml:replace_erbs'
 puts "\n"
+
+# for config
+puts "Installing config ..."
+run "bundle exec rails g config:install"
+puts "\n"
+
+# for friendly_id
+puts "Installing friendly_id ..."
+run "bundle exec rails g friendly_id; bundle exec rake db:migrate"
+puts "\n"
