@@ -18,3 +18,5 @@ end
 puts "\n========================================================="
 puts " Rails4 FullStack Application Template"
 puts "=========================================================\n"
+
+copy_static_file 'Gemfile'
