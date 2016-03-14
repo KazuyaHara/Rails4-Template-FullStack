@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------
-# Rails4 FullStack Application Template
+# Rails4 FullStack Application Template Initialize
 # ----------------------------------------------------------------
 
 # Directories for template partials and static files
@@ -16,7 +16,7 @@ def copy_static_file(path)
 end
 
 puts "\n========================================================="
-puts " Rails4 FullStack Application Template"
+puts " Rails4 FullStack Application Template Initialize"
 puts "=========================================================\n"
 
 copy_static_file 'Gemfile'
