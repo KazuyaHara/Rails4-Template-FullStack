@@ -34,7 +34,7 @@ puts "Integrating with Guard & Spring ..."
 run "bundle exec guard init rspec"
 run "bundle exec spring binstub rspec"
 gsub_file 'Guardfile', /guard :rspec, cmd: "bundle exec rspec" do/, "guard :rspec, cmd: 'bundle exec spring rspec' do"
-  puts "\n"
+puts "\n"
 
 git :add => '.'
 git :commit => "-aqm 'Configured RSpec.'"
