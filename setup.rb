@@ -17,3 +17,4 @@ git :commit => "-aqm 'Install bundled gems.'"
 puts "\n"
 
 apply "#{@partials}/_rspec.rb"
+apply "#{@partials}/_essentials.rb"
