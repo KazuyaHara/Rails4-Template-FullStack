@@ -42,12 +42,11 @@ puts "\n"
 puts "Setup RSpec ActiveJob ..."
 insert_into_file 'config/environments/test.rb',%(
 
-# for RSpec ActiveJob
-config.active_job.queue_adapter = :test
+  # for RSpec ActiveJob
+  config.active_job.queue_adapter = :test
 ), after: '# config.action_view.raise_on_missing_translations = true'
 insert_into_file 'spec/rails_helper.rb',%(
-require 'rspec/active_job'
-), after: "require 'shoulda/matchers'"
+require 'rspec/active_job'), after: "require 'shoulda/matchers'"
 insert_into_file 'spec/rails_helper.rb',%(
 
   config.include(RSpec::ActiveJob)
@@ -56,10 +55,8 @@ insert_into_file 'spec/rails_helper.rb',%(
   config.after(:each) do
     ActiveJob::Base.queue_adapter.enqueued_jobs = []
     ActiveJob::Base.queue_adapter.performed_jobs = []
-  end
-), after: 'config.include FactoryGirl::Syntax::Methods'
+  end), after: 'config.include FactoryGirl::Syntax::Methods'
 puts "\n"
-
 
 git :add => '.'
 git :commit => "-aqm 'Configured RSpec.'"
