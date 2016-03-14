@@ -47,8 +47,7 @@ insert_into_file 'config/environments/test.rb',%(
 insert_into_file 'spec/rails_helper.rb',%(
 require 'rspec/active_job'), after: "require 'shoulda/matchers'"
 insert_into_file 'spec/rails_helper.rb',%(
-
-  config.include(RSpec::ActiveJob)
+  config.include RSpec::ActiveJob
 
   # clean out the queue after each spec
   config.after(:each) do
