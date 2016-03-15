@@ -6,58 +6,58 @@ puts "\n"
 
 # for Bootstrap
 @using_bootstrap = if yes?('Use bootstrap4?([yes or ELSE])')
-  puts "Installing bootstrap4 ..."
-  gsub_file 'Gemfile', /# gem 'bootstrap', '~> 4.0.0.alpha3'/, "gem 'bootstrap', '~> 4.0.0.alpha3'"
-  gsub_file 'Gemfile', /# rails-assets-source/, "source 'https://rails-assets.org'"
-  gsub_file 'Gemfile', /#   gem 'rails-assets-tether', '>= 1.1.0'/, "  gem 'rails-assets-tether', '>= 1.1.0'"
-  gsub_file 'Gemfile', /# end/, "end"
-  install_from_gemfile
-  puts "\n"
+puts "Installing bootstrap4 ..."
+gsub_file 'Gemfile', /# gem 'bootstrap', '~> 4.0.0.alpha3'/, "gem 'bootstrap', '~> 4.0.0.alpha3'"
+gsub_file 'Gemfile', /# rails-assets-source/, "source 'https://rails-assets.org'"
+gsub_file 'Gemfile', /#   gem 'rails-assets-tether', '>= 1.1.0'/, "  gem 'rails-assets-tether', '>= 1.1.0'"
+gsub_file 'Gemfile', /# end/, "end"
+install_from_gemfile
+puts "\n"
 
-  puts "Updating application.scss & application.js ..."
-  insert_into_file 'app/assets/stylesheets/application.scss',%(
-  @import "bootstrap";), after: "// Add additional styles below this line"
-  insert_into_file 'app/assets/javascripts/application.js',%(
-  //= require tether
-  //= require bootstrap-sprockets), after: "//= require jquery_ujs"
-  puts "\n"
+puts "Updating application.scss & application.js ..."
+insert_into_file 'app/assets/stylesheets/application.scss',%(
+@import "bootstrap";), after: "// Add additional styles below this line"
+insert_into_file 'app/assets/javascripts/application.js',%(
+//= require tether
+//= require bootstrap-sprockets), after: "//= require jquery_ujs"
+puts "\n"
 end
 
 # for compass
 @using_compass = if yes?('Use compass?([yes or ELSE])')
-  puts "Installing compass ..."
-  gsub_file 'Gemfile', /# gem 'compass-rails'/, "gem 'compass-rails'"
-  install_from_gemfile
-  puts "\n"
+puts "Installing compass ..."
+gsub_file 'Gemfile', /# gem 'compass-rails'/, "gem 'compass-rails'"
+install_from_gemfile
+puts "\n"
 
-  puts "Updating application.scss ..."
-  if @using_bootstrap
-    insert_into_file 'app/assets/stylesheets/application.scss',%(
-    @import "compass";), after: '@import "bootstrap";'
-  else
-    insert_into_file 'app/assets/stylesheets/application.scss',%(
-    @import "compass";), after: '// Add additional styles below this line'
-  end
-  puts "\n"
+puts "Updating application.scss ..."
+if @using_bootstrap == "yes"
+  insert_into_file 'app/assets/stylesheets/application.scss',%(
+  @import "compass";), after: '@import "bootstrap";'
+else
+  insert_into_file 'app/assets/stylesheets/application.scss',%(
+  @import "compass";), after: '// Add additional styles below this line'
+end
+puts "\n"
 end
 
 # for Font Awesome
 @using_fontawesome = if yes?('Use font awesome?([yes or ELSE])')
-  puts "Installing Font Awesome ..."
-  gsub_file 'Gemfile', /# gem 'font-awesome-rails'/, "gem 'font-awesome-rails'"
-  install_from_gemfile
-  puts "\n"
+puts "Installing Font Awesome ..."
+gsub_file 'Gemfile', /# gem 'font-awesome-rails'/, "gem 'font-awesome-rails'"
+install_from_gemfile
+puts "\n"
 
-  puts "Updating application.scss ..."
-  if @using_compass
-    insert_into_file 'app/assets/stylesheets/application.scss',%(
-    @import "font-awesome";), after: '@import "compass";'
-  elsif @using_bootstrap
-    insert_into_file 'app/assets/stylesheets/application.scss',%(
-    @import "font-awesome";), after: '@import "bootstrap";'
-  else
-    insert_into_file 'app/assets/stylesheets/application.scss',%(
-    @import "font-awesome";), after: '// Add additional styles below this line'
-  end
-  puts "\n"
+puts "Updating application.scss ..."
+if @using_compass == "yes"
+  insert_into_file 'app/assets/stylesheets/application.scss',%(
+  @import "font-awesome";), after: '@import "compass";'
+elsif @using_bootstrap == "yes"
+  insert_into_file 'app/assets/stylesheets/application.scss',%(
+  @import "font-awesome";), after: '@import "bootstrap";'
+else
+  insert_into_file 'app/assets/stylesheets/application.scss',%(
+  @import "font-awesome";), after: '// Add additional styles below this line'
+end
+puts "\n"
 end
