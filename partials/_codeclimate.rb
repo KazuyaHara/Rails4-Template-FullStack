@@ -5,7 +5,6 @@ Bundler.with_clean_env do
 end
 puts "\n"
 
-puts "add codeclimate settings ..."
 copy_static_file ".codeclimate.yml"
 insert_into_file 'spec/rails_helper.rb',%(
 require "codeclimate-test-reporter"
