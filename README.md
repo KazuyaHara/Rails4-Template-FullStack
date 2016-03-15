@@ -8,7 +8,6 @@ Consider your application name deeply, and then run
 $ git clone git://github.com/KazuyaHara/Rails4-Template-FullStack.git
 $ bundle exec rails new appname -BT -d postgresql -m ./Rails4-Template-FullStack/initialize.rb
 $ cd appname
-$ bundle install --path vendor/bundle -j4
 $ bin/rake rails:template LOCATION=../Rails4-Template-FullStack/setup.rb
 ```
 
