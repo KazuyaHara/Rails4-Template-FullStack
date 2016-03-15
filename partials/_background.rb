@@ -23,13 +23,7 @@ copy_static_file "config/initializers/sidekiq.rb"
 
 # add routing for sidekiq dashboard
 puts "Routing for sidekiq dashboard ..."
-if yes?('Everyone can see the dashboard? ([yes or ELSE])')
-  insert_into_file 'config/routes.rb',%(
-
-    # sidekiq dashboard
-    require 'sidekiq/web'
-    mount Sidekiq::Web, at: '/sidekiq'), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
-else
+if @using_devise && yes?('Hide dashboard from unauthorized users? ([yes or ELSE])')
   namespace = ask("Type admin namespace like 'admin'")
   insert_into_file 'config/routes.rb',%(
 
@@ -38,6 +32,12 @@ else
   authenticate :#{namespace} do
     mount Sidekiq::Web, at: '/sidekiq'
   end), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
+else
+  insert_into_file 'config/routes.rb',%(
+
+    # sidekiq dashboard
+    require 'sidekiq/web'
+    mount Sidekiq::Web, at: '/sidekiq'), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
 end
 run "bundle exec annotate --routes"
 puts "\n"
