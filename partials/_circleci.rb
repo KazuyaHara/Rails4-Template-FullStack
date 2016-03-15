@@ -11,3 +11,5 @@ puts "\n"
 
 git :add => '.'
 git :commit => "-aqm 'setup ciecle ci'"
+
+puts "\n"

@@ -29,3 +29,4 @@ apply "#{@partials}/_puma.rb"
 apply "#{@partials}/_rspec.rb"
 apply "#{@partials}/_essentials.rb" # should run after '_rspec.rb'
 apply "#{@partials}/_circleci.rb" if yes?('Use circle ci?([yes or ELSE])')
+apply "#{@partials}/_codeclimate.rb" if yes?('Use codeclimate?([yes or ELSE])')
