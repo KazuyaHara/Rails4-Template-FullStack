@@ -23,3 +23,14 @@ copy_static_file 'Gemfile'
 apply "#{@partials}/_cleanup.rb"
 apply "#{@partials}/_git.rb"
 apply "#{@partials}/_application.rb"
+
+puts "Instaling ..."
+run "cd #{app_name}"
+Bundler.with_clean_env do
+  run 'bundle install --path vendor/bundle -j4'
+end
+puts "\n"
+
+git :add => '.'
+git :commit => "-aqm 'Install bundled gems.'"
+puts "\n"
