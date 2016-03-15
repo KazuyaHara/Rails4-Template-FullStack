@@ -13,7 +13,6 @@ gsub_file 'Gemfile', /# rails-assets-source/, "source 'https://rails-assets.org'
 gsub_file 'Gemfile', /#   gem 'rails-assets-tether', '>= 1.1.0'/, "  gem 'rails-assets-tether', '>= 1.1.0'"
 gsub_file 'Gemfile', /# end/, "end"
 install_from_gemfile
-puts "\n"
 
 puts "Updating application.scss & application.js ..."
 insert_into_file 'app/assets/stylesheets/application.scss',%(
