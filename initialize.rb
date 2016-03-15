@@ -25,7 +25,6 @@ apply "#{@partials}/_git.rb"
 apply "#{@partials}/_application.rb"
 
 puts "Instaling ..."
-run "cd #{app_name}"
 Bundler.with_clean_env do
   run 'bundle install --path vendor/bundle -j4'
 end
