@@ -15,6 +15,18 @@ def copy_static_file(path)
   puts "\n"
 end
 
+def install_from_gemfile
+  puts "Installing gems..."
+  Bundler.with_clean_env do
+    run 'bundle install --path vendor/bundle -j4'
+  end
+  puts "\n"
+
+  git :add => '.'
+  git :commit => "-aqm 'install bundled gems'"
+  puts "\n"
+end
+
 puts "\n========================================================="
 puts " Rails4 FullStack Application Template Initialize"
 puts "=========================================================\n"
@@ -22,14 +34,5 @@ puts "=========================================================\n"
 copy_static_file 'Gemfile'
 apply "#{@partials}/_cleanup.rb"
 apply "#{@partials}/_git.rb"
+install_from_gemfile
 apply "#{@partials}/_application.rb"
-
-puts "Installing ..."
-Bundler.with_clean_env do
-  run 'bundle install --path vendor/bundle -j4'
-end
-puts "\n"
-
-git :add => '.'
-git :commit => "-aqm 'Install bundled gems.'"
-puts "\n"

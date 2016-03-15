@@ -1,10 +1,6 @@
 puts "Installing codeclimate test reporter ... "
 gsub_file 'Gemfile', /# gem 'codeclimate-test-reporter', require: nil/, "gem 'codeclimate-test-reporter', require: nil"
-Bundler.with_clean_env do
-  run 'bundle install'
-end
-puts "\n"
-
+install_from_gemfile
 copy_static_file ".codeclimate.yml"
 insert_into_file 'spec/rails_helper.rb',%(
 require "codeclimate-test-reporter"
