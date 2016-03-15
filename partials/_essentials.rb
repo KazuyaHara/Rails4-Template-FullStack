@@ -1,7 +1,6 @@
 # for dotenv
 puts "Add .env file ..."
 copy_static_file ".env"
-puts "\n"
 
 # for annotate
 puts "Annotating ..."
