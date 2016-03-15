@@ -72,7 +72,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Bootstrap
 # gem 'bootstrap', '~> 4.0.0.alpha3'
-# source 'https://rails-assets.org' do
+# rails-assets-source do
 #   gem 'rails-assets-tether', '>= 1.1.0'
 # end
 

@@ -8,8 +8,8 @@ puts "\n"
 @using_bootstrap = if yes?('Use bootstrap4?([yes or ELSE])')
   puts "Installing bootstrap4 ..."
   gsub_file 'Gemfile', /# gem 'bootstrap', '~> 4.0.0.alpha3'/, "gem 'bootstrap', '~> 4.0.0.alpha3'"
-  gsub_file 'Gemfile', /# source 'https://rails-assets.org' do/, "source 'https://rails-assets.org' do"
-  gsub_file 'Gemfile', /#   gem 'rails-assets-tether', '>= 1.1.0'/, "  gem 'rails-assets-tether', '>= 1.1.0'"
+  gsub_file 'Gemfile', /# gem 'bootstrap', '~> 4.0.0.alpha3'/, "gem 'bootstrap', '~> 4.0.0.alpha3'"
+  gsub_file 'Gemfile', /# rails-assets-source/, "source 'https://rails-assets.org'"
   gsub_file 'Gemfile', /# end/, "end"
   install_from_gemfile
   puts "\n"
