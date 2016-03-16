@@ -1,8 +1,14 @@
 puts "Setting default timezone to 'Tokyo'... "
 gsub_file 'config/application.rb', /# config.time_zone = '.+'/, "config.time_zone = 'Tokyo'"
+puts "\n"
 
 puts "Setting default locale to ':ja'... "
 gsub_file 'config/application.rb', /# config.i18n.default_locale = :de/, "config.i18n.default_locale = :ja"
+puts "\n"
+
+puts "Adding a locale file ..."
+copy_static_file "config/locales/ja.yml"
+puts "\n"
 
 puts "Setting default generator... "
 generators = <<-RUBY
