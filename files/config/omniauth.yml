@@ -1,0 +1,43 @@
+production: &production
+  # facebook:
+  #   key: <%= ENV['FACEBOOK_APP_ID'] %>
+  #   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>
+  # twitter:
+  #   key: <%= ENV['TWITTER_APP_ID'] %>
+  #   secret: <%= ENV['TWITTER_SECRET_KEY'] %>
+  # google:
+  #   key: <%= ENV['GOOGLE_APP_ID'] %>
+  #   secret: <%= ENV['GOOGLE_SECRET_KEY'] %>
+  # hatena:
+  #   key: <%= ENV['HATENA_APP_ID'] %>
+  #   secret: <%= ENV['HATENA_SECRET_KEY'] %>
+  # github:
+  #   key: <%= ENV['GITHUB_APP_ID'] %>
+  #   secret: <%= ENV['GITHUB_SECRET_KEY'] %>
+  # linkedin:
+  #   key: <%= ENV['LINKEDIN_APP_ID'] %>
+  #   secret: <%= ENV['LINKEDIN_SECRET_KEY'] %>
+  # mixi:
+  #   key: <%= ENV['MIXI_APP_ID'] %>
+  #   secret: <%= ENV['MIXI_SECRET_KEY'] %>
+
+development: &development
+  <<: *production
+  # facebook:
+  #   key: <%= ENV['FACEBOOK_APP_ID'] %>
+  #   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>
+  # twitter:
+  #   key: <%= ENV['TWITTER_APP_ID'] %>
+  #   secret: <%= ENV['TWITTER_SECRET_KEY'] %>
+  # github:
+  #   key: <%= ENV['GITHUB_APP_ID'] %>
+  #   secret: <%= ENV['GITHUB_SECRET_KEY'] %>
+  # mixi:
+  #   key: <%= ENV['MIXI_APP_ID'] %>
+  #   secret: <%= ENV['MIXI_SECRET_KEY'] %>
+
+test:
+  <<: *development
+
+staging:
+  <<: *development
