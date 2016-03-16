@@ -3,8 +3,8 @@
 
 # update Gemfile
 puts "Installing related gems to Devise ..."
-uncomment_lines 'Gemfile', /# gem 'bcrypt', '~> 3.1.7'/
-uncomment_lines 'Gemfile', /# gem 'devise'/
+uncomment_lines 'Gemfile', /gem 'bcrypt', '~> 3.1.7'/
+uncomment_lines 'Gemfile', /gem 'devise'/
 install_from_gemfile
 
 
@@ -16,7 +16,7 @@ puts "\n"
 
 puts "Adding default_url_options ..."
 insert_into_file 'config/environments/development.rb',%(
-    config.action_mailer.default_url_options = {host: 'localhost', port: 3000}), after: "config.action_mailer.raise_delivery_errors = false"
+  config.action_mailer.default_url_options = {host: 'localhost', port: 3000}), after: "config.action_mailer.raise_delivery_errors = false"
 puts "\n"
 
 puts "Setting test helper ..."
@@ -39,7 +39,7 @@ puts "\n"
 # setup View
 puts "Generating views ..."
 run "bundle exec rails g devise:views #{resources} -v registrations sessions passwords; bundle exec rake haml:replace_erbs"
-uncomment_lines 'config/initializers/devise.rb', /# config.scoped_views = true/
+uncomment_lines 'config/initializers/devise.rb', /config.scoped_views = true/
 puts "\n"
 
 
