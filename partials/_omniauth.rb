@@ -1,8 +1,8 @@
 # Install settings
 puts "Adding setting files ..."
 copy_static_file "config/omniauth.yml"
-insert_into_file 'config/initializers/devise.rb',%(
-  OAUTH_CONFIG = YAML.load(ERB.new(File.read("#{Rails.root}/config/omniauth.yml")).result)[Rails.env].symbolize_keys!
+@rails_root = '#{Rails.root}'
+insert_into_file 'config/initializers/devise.rb',%(OAUTH_CONFIG = YAML.load(ERB.new(File.read("#{@rails_root}/config/omniauth.yml")).result)[Rails.env].symbolize_keys!
 
   # https://github.com/mkdynamic/omniauth-facebook
   # https://developers.facebook.com/docs/concepts/login/
@@ -48,7 +48,7 @@ puts "\n"
 puts "Creating SocialProfile model ..."
 parent_model = ask("Type parent model name you generated in above process (type like 'user')")
 
-unless ActiveRecord::Base.connection.tables.include?("#{parent_model.pluralize}")
+unless ActiveRecord::Base.connection.tables.include?("#{parent_model.pluralize.downcase}")
   # setup Model
   puts "Generating #{parent_model.capitalize} model ..."
   columns = ask("If you need, type column names for #{parent_model.capitalize} model (like 'nick_name description:text')")
@@ -84,7 +84,7 @@ unless ActiveRecord::Base.connection.tables.include?("#{parent_model.pluralize}"
   puts "\n"
 end
 
-run "bundle exec rails g model SocialProfile #{parent_model}:references provider uid access_token access_secret name nickname email url image_url description other:text credentials:text raw_info:text"
+run "bundle exec rails g model SocialProfile #{parent_model.downcase}:references provider uid access_token access_secret name nickname email url image_url description other:text credentials:text raw_info:text"
 @uid = "uid"
 insert_into_file 'app/models/social_profile.rb',%(
   store :other
@@ -147,7 +147,7 @@ puts "\n"
 
 # Update parent model
 puts "Updating #{parent_model.capitalize} model ..."
-insert_into_file "app/models/#{parent_model}.rb",%(
+insert_into_file "app/models/#{parent_model.downcase}.rb",%(
 
   has_many :social_profiles, dependent: :destroy
 
@@ -156,7 +156,7 @@ insert_into_file "app/models/#{parent_model}.rb",%(
   end), after: ':recoverable, :rememberable, :trackable, :validatable'
 copy_static_file "db/migrate/20160401000002_add_dummy_email_to_user.rb"
 gsub_file "db/migrate/20160401000002_add_dummy_email_to_user.rb", /ToUser/, "To#{parent_model.capitalize}"
-gsub_file "db/migrate/20160401000002_add_dummy_email_to_user.rb", /users/, "#{parent_model.pluralize}"
+gsub_file "db/migrate/20160401000002_add_dummy_email_to_user.rb", /users/, "#{parent_model.pluralize.downcase}"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
@@ -166,7 +166,7 @@ puts "\n"
 puts "Updating strong paramater for #{parent_model.capitalize} ..."
 copy_static_file "app/models/concerns/devise_sanitizer.rb"
 gsub_file "app/models/concerns/devise_sanitizer.rb", /User::ParameterSanitizer/, "#{parent_model.capitalize}::ParameterSanitizer"
-@strong_paramater_sanitilizer = "#{parent_model.capitalize}::ParameterSanitizer.new(#{parent_model.capitalize}, :#{parent_model}, params)"
+@strong_paramater_sanitilizer = "#{parent_model.capitalize}::ParameterSanitizer.new(#{parent_model.capitalize}, :#{parent_model.downcase}, params)"
 insert_into_file "app/controllers/application_controller.rb",%(
 
   protected
@@ -183,11 +183,11 @@ puts "\n"
 
 # Create OmniauthCallbacks controller
 puts "Creating OmniauthCallbacks controller ..."
-run "bundle exec rails g controller #{parent_model.pluralize}/OmniauthCallbacks"
+run "bundle exec rails g controller #{parent_model.pluralize.downcase}/OmniauthCallbacks"
 @provider = "@omniauth['provider']"
 @dummy = '#{name}-#{SecureRandom.hex(10)}@example.com'
-@sign_in_path = "sign_in(:#{parent_model}, @profile.#{parent_model})"
-insert_into_file "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb",%(
+@sign_in_path = "sign_in(:#{parent_model.downcase}, @profile.#{parent_model.downcase})"
+insert_into_file "app/controllers/#{parent_model.pluralize.downcase}/omniauth_callbacks_controller.rb",%(
   # def facebook; basic_action; end
   # def twitter; basic_action; end
   # def google; basic_action; end
@@ -220,8 +220,8 @@ insert_into_file "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_c
           end
         end
 
-        if current_#{parent_model}
-          return redirect_to :back, alert: "この#{@provider} IDはすでに別のアカウントで使用されています" if current_#{parent_model} != @profile.#{parent_model}
+        if current_#{parent_model.downcase}
+          return redirect_to :back, alert: "この#{@provider} IDはすでに別のアカウントで使用されています" if current_#{parent_model.downcase} != @profile.#{parent_model.downcase}
         else
           #{@sign_in_path}
         end
@@ -246,7 +246,7 @@ puts "\n"
 # Add routing
 puts "Adding routes ..."
 insert_into_file 'config/routes.rb',%(
-    omniauth_callbacks: '#{parent_model.pluralize}/omniauth_callbacks',), before: "registrations:  '#{parent_model.pluralize}/registrations',"
+    omniauth_callbacks: '#{parent_model.pluralize.downcase}/omniauth_callbacks',), after: "devise_for :#{parent_model.pluralize.downcase}, controllers: {"
 run "bundle exec annotate --routes"
 puts "\n"
 
@@ -261,13 +261,13 @@ puts "\n"
 
 # Select provider
 if yes?('oauth with facebook?([yes or ELSE])')
-  uncomment_lines 'Gemfile', /# gem 'omniauth-facebook'/
+  uncomment_lines 'Gemfile', /gem 'omniauth-facebook'/
   install_from_gemfile
-  uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /# def facebook; basic_action; end/
-  uncomment_lines "config/omniauth.yml", /# facebook:/
-  uncomment_lines "config/omniauth.yml", /#   key: <%= ENV['FACEBOOK_APP_ID'] %>/
-  uncomment_lines "config/omniauth.yml", /#   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
-  uncomment_lines "config/initializers/devise.rb", /# config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/
+  uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /def facebook; basic_action; end/
+  uncomment_lines "config/omniauth.yml", /facebook:/
+  uncomment_lines "config/omniauth.yml", /  key: <%= ENV['FACEBOOK_APP_ID'] %>/
+  uncomment_lines "config/omniauth.yml", /  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
+  uncomment_lines "config/initializers/devise.rb", /config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/
   puts "\n"
 
   git :add => "."
@@ -275,20 +275,20 @@ if yes?('oauth with facebook?([yes or ELSE])')
   puts "\n"
 end
 if yes?('oauth with Twitter?([yes or ELSE])')
-  uncomment_lines 'Gemfile', /# gem 'omniauth-twitter'/
+  uncomment_lines 'Gemfile', /gem 'omniauth-twitter'/
   install_from_gemfile
   uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /# def twitter; basic_action; end/
-  uncomment_lines "config/omniauth.yml", /# twitter:/
-  uncomment_lines "config/omniauth.yml", /#   key: <%= ENV['TWITTER_APP_ID'] %>/
-  uncomment_lines "config/omniauth.yml", /#   secret: <%= ENV['TWITTER_SECRET_KEY'] %>/
-  uncomment_lines "config/initializers/devise.rb", /# config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/
-  uncomment_lines "app/models/social_profile.rb", /# when 'twitter'/
-  uncomment_lines "app/models/social_profile.rb", /#   self.url = info['urls']['Twitter']/
-  uncomment_lines "app/models/social_profile.rb", /#   self.other[:location] = info['location']/
-  uncomment_lines "app/models/social_profile.rb", /#   self.other[:website] = info['urls']['Website']/
-  uncomment_lines "app/models/social_profile.rb", /#   self.other[:followers_count] = raw_info['followers_count']/
-  uncomment_lines "app/models/social_profile.rb", /#   self.other[:friends_count] = raw_info['friends_count']/
-  uncomment_lines "app/models/social_profile.rb", /#   self.other[:statuses_count] = raw_info['statuses_count']/
+  uncomment_lines "config/omniauth.yml", /twitter:/
+  uncomment_lines "config/omniauth.yml", /  key: <%= ENV['TWITTER_APP_ID'] %>/
+  uncomment_lines "config/omniauth.yml", /  secret: <%= ENV['TWITTER_SECRET_KEY'] %>/
+  uncomment_lines "config/initializers/devise.rb", /config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/
+  uncomment_lines "app/models/social_profile.rb", /when 'twitter'/
+  uncomment_lines "app/models/social_profile.rb", /  self.url = info['urls']['Twitter']/
+  uncomment_lines "app/models/social_profile.rb", /  self.other[:location] = info['location']/
+  uncomment_lines "app/models/social_profile.rb", /  self.other[:website] = info['urls']['Website']/
+  uncomment_lines "app/models/social_profile.rb", /  self.other[:followers_count] = raw_info['followers_count']/
+  uncomment_lines "app/models/social_profile.rb", /  self.other[:friends_count] = raw_info['friends_count']/
+  uncomment_lines "app/models/social_profile.rb", /  self.other[:statuses_count] = raw_info['statuses_count']/
   puts "\n"
 
   git :add => "."
