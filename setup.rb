@@ -37,6 +37,6 @@ apply "#{@partials}/_rspec.rb"
 apply "#{@partials}/_essentials.rb" # should run after '_rspec.rb'
 apply "#{@partials}/_stylesheets.rb"
 apply "#{@partials}/_devise.rb" if yes?('Use devise?([yes or ELSE])')
-apply "#{@partials}/_background.rb" if yes?('Use background jobs?([yes or ELSE])') # should run after '_decise.rb'
+apply "#{@partials}/_background.rb" if yes?('Use background jobs?([yes or ELSE])') # should run after '_devise.rb'
 apply "#{@partials}/_circleci.rb" if yes?('Use circle ci?([yes or ELSE])')
 apply "#{@partials}/_codeclimate.rb" if yes?('Use codeclimate?([yes or ELSE])') # should run after '_rspec.rb'
