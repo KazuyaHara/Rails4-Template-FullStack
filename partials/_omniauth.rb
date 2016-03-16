@@ -251,6 +251,14 @@ run "bundle exec annotate --routes"
 puts "\n"
 
 
+
+# Commit
+git :add => "."
+git :commit => "-aqm 'generate SocialProfile model & OmniauthCallbacks controller'"
+puts "\n"
+
+
+
 # Select provider
 if yes?('oauth with facebook?([yes or ELSE])')
   uncomment_lines 'Gemfile', /# gem 'omniauth-facebook'/
@@ -259,6 +267,11 @@ if yes?('oauth with facebook?([yes or ELSE])')
   uncomment_lines "config/omniauth.yml", /#   key: <%= ENV['FACEBOOK_APP_ID'] %>/
   uncomment_lines "config/omniauth.yml", /#   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
   uncomment_lines "config/initializers/devise.rb", /# config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/
+  puts "\n"
+
+  git :add => "."
+  git :commit => "-aqm 'integrate with facebook omniauth'"
+  puts "\n"
 end
 if yes?('oauth with Twitter?([yes or ELSE])')
   uncomment_lines 'Gemfile', /# gem 'omniauth-twitter'/
@@ -274,4 +287,9 @@ if yes?('oauth with Twitter?([yes or ELSE])')
   uncomment_lines "app/models/social_profile.rb", /#   self.other[:followers_count] = raw_info['followers_count']/
   uncomment_lines "app/models/social_profile.rb", /#   self.other[:friends_count] = raw_info['friends_count']/
   uncomment_lines "app/models/social_profile.rb", /#   self.other[:statuses_count] = raw_info['statuses_count']/
+  puts "\n"
+
+  git :add => "."
+  git :commit => "-aqm 'integrate with twitter omniauth'"
+  puts "\n"
 end

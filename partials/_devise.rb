@@ -77,5 +77,9 @@ puts "\n"
 
 
 
+# commit
+git :add => "."
+git :commit => "-aqm 'install devise'"
+
 # Omniauth
 apply "#{@partials}/_omniauth.rb" if yes?('use omniauth?([yes or ELSE])')
