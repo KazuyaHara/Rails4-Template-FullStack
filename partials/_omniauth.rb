@@ -262,6 +262,7 @@ puts "\n"
 # Select provider
 if yes?('oauth with facebook?([yes or ELSE])')
   uncomment_lines 'Gemfile', /# gem 'omniauth-facebook'/
+  install_from_gemfile
   uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /# def facebook; basic_action; end/
   uncomment_lines "config/omniauth.yml", /# facebook:/
   uncomment_lines "config/omniauth.yml", /#   key: <%= ENV['FACEBOOK_APP_ID'] %>/
@@ -275,6 +276,7 @@ if yes?('oauth with facebook?([yes or ELSE])')
 end
 if yes?('oauth with Twitter?([yes or ELSE])')
   uncomment_lines 'Gemfile', /# gem 'omniauth-twitter'/
+  install_from_gemfile
   uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /# def twitter; basic_action; end/
   uncomment_lines "config/omniauth.yml", /# twitter:/
   uncomment_lines "config/omniauth.yml", /#   key: <%= ENV['TWITTER_APP_ID'] %>/
