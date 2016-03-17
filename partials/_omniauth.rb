@@ -139,7 +139,7 @@ insert_into_file 'app/models/social_profile.rb',%(
   end), after: 'belongs_to :user'
 copy_static_file "db/migrate/20160401000001_add_index_to_social_profile.rb"
 gsub_file "app/models/#{parent_model.downcase}.rb", /# :confirmable, :lockable, :timeoutable and :omniauthable/, "# :confirmable, :lockable and :timeoutable"
-gsub_file "app/models/#{parent_model.downcase}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :confirmable,"
+gsub_file "app/models/#{parent_model.downcase}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :omniauthable,"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
