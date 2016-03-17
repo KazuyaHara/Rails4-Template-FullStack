@@ -265,12 +265,13 @@ puts "\n"
 
 # Select provider
 if @oauth_with_facebook
+  puts "Adding omniauth-facebook ..."
   uncomment_lines 'Gemfile', /gem 'omniauth-facebook'/
   install_from_gemfile
   uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /def facebook; basic_action; end/
   uncomment_lines "config/omniauth.yml", /facebook:/
-  uncomment_lines "config/omniauth.yml", /  key: <%= ENV['FACEBOOK_APP_ID'] %>/
-  uncomment_lines "config/omniauth.yml", /  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
+  uncomment_lines "config/omniauth.yml", /key: <%= ENV['FACEBOOK_APP_ID'] %>/
+  uncomment_lines "config/omniauth.yml", /secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
   uncomment_lines "config/initializers/devise.rb", /config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/
   puts "\n"
 
@@ -279,20 +280,21 @@ if @oauth_with_facebook
   puts "\n"
 end
 if @oauth_with_twitter
+  puts "Adding omniauth-twitter ..."
   uncomment_lines 'Gemfile', /gem 'omniauth-twitter'/
   install_from_gemfile
   uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /# def twitter; basic_action; end/
   uncomment_lines "config/omniauth.yml", /twitter:/
-  uncomment_lines "config/omniauth.yml", /  key: <%= ENV['TWITTER_APP_ID'] %>/
-  uncomment_lines "config/omniauth.yml", /  secret: <%= ENV['TWITTER_SECRET_KEY'] %>/
+  uncomment_lines "config/omniauth.yml", /key: <%= ENV['TWITTER_APP_ID'] %>/
+  uncomment_lines "config/omniauth.yml", /secret: <%= ENV['TWITTER_SECRET_KEY'] %>/
   uncomment_lines "config/initializers/devise.rb", /config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/
   uncomment_lines "app/models/social_profile.rb", /when 'twitter'/
-  uncomment_lines "app/models/social_profile.rb", /  self.url = info['urls']['Twitter']/
-  uncomment_lines "app/models/social_profile.rb", /  self.other[:location] = info['location']/
-  uncomment_lines "app/models/social_profile.rb", /  self.other[:website] = info['urls']['Website']/
-  uncomment_lines "app/models/social_profile.rb", /  self.other[:followers_count] = raw_info['followers_count']/
-  uncomment_lines "app/models/social_profile.rb", /  self.other[:friends_count] = raw_info['friends_count']/
-  uncomment_lines "app/models/social_profile.rb", /  self.other[:statuses_count] = raw_info['statuses_count']/
+  uncomment_lines "app/models/social_profile.rb", /self.url = info['urls']['Twitter']/
+  uncomment_lines "app/models/social_profile.rb", /self.other[:location] = info['location']/
+  uncomment_lines "app/models/social_profile.rb", /self.other[:website] = info['urls']['Website']/
+  uncomment_lines "app/models/social_profile.rb", /self.other[:followers_count] = raw_info['followers_count']/
+  uncomment_lines "app/models/social_profile.rb", /self.other[:friends_count] = raw_info['friends_count']/
+  uncomment_lines "app/models/social_profile.rb", /self.other[:statuses_count] = raw_info['statuses_count']/
   puts "\n"
 
   git :add => "."
