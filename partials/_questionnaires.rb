@@ -53,6 +53,17 @@ end
 @hide_dashboard = true if @using_background && yes?('Hide dashboard from unauthorized users? ([yes or ELSE])')
 @namespace = ask("Specify namespace like 'admin'") if @hide_dashboard
 
+# about paperclip
+@using_paperclip = true if @using_background && yes?('Use paperclip?([yes or ELSE])')
+@add_paperclip_now = true if @using_paperclip && yes?('Add paperclip right now?([yes or ELSE])')
+if @add_paperclip_now
+  @paperclip_model_original = ask("  Type model name")
+  @paperclip_model = singularized_and_capitalized(@paperclip_model_original)
+  @paperclip_model_downcased = singularized_and_downcased(@paperclip_model_original)
+  @paperclip_resources = pluralized_and_downcased(@paperclip_model_original)
+  @paperclip_column = singularized_and_downcased(ask("  Type column name like 'image', 'avatar' or something"))
+end
+
 # about development flow
 @using_circleci = true if yes?('Use circle ci?([yes or ELSE])')
 @ruby_version = ask('Ruby version? (specify like "2.3.0")') if @using_circleci

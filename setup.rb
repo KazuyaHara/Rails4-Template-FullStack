@@ -39,6 +39,7 @@ apply "#{@partials}/_essentials.rb" # should run after '_rspec.rb'
 apply "#{@partials}/_stylesheets.rb"
 apply "#{@partials}/_devise.rb" if @using_devise
 apply "#{@partials}/_background.rb" if @using_background # should run after '_devise.rb'
+apply "#{@partials}/_paperclip.rb" if @using_paperclip # should run after '_background.rb'
 apply "#{@partials}/_notification.rb" if @using_notification
 apply "#{@partials}/_circleci.rb" if @using_circleci
 apply "#{@partials}/_codeclimate.rb" if @using_codeclimate # should run after '_rspec.rb'

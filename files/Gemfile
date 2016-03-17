@@ -97,7 +97,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # gem 'font-awesome-rails'
 
 # Paperclip
-# gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
+# gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git' # usage 'rails g paperclip user avatar'
 # gem 'delayed_paperclip'
 # gem 'aws-sdk'
 

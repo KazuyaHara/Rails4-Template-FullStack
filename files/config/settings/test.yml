@@ -1,0 +1,12 @@
+aws:
+  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+s3:
+  public:
+    path: ':rails_root/public/system/:class/:id/:filename/:style'
+    bucket:
+  private:
+    path: ':rails_root/public/system/:class/:id/:filename/:style'
+    bucket:
+  common:
+    XXX_image_path:
