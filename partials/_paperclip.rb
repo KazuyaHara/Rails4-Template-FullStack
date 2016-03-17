@@ -48,6 +48,12 @@ if @add_paperclip_now
   puts "Updating strong paramaters ..."
   gsub_file "app/controllers/#{@paperclip_resources}_controller.rb", ".permit(", ".permit(:#{@paperclip_column}, "
   puts "\n"
+
+  # update sidekiq config
+  puts "Updating sidekiq config ..."
+  insert_into_file "config/sidekiq.yml",%(
+  - paperclip), after: "- default"
+  puts "\n"
 end
 
 git :add => "."
