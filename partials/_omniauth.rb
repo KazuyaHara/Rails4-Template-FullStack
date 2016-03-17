@@ -106,7 +106,7 @@ insert_into_file 'app/models/social_profile.rb',%(
     self.nickname = info['nickname']
     self.description = info['description'].try(:truncate, 255)
     self.image_url = info['image']
-    case provider.to_s
+    # case provider.to_s
     # when 'twitter'
     #   self.url = info['urls']['Twitter']
     #   self.other[:location] = info['location']
@@ -122,20 +122,20 @@ insert_into_file 'app/models/social_profile.rb',%(
     #   self.other[:blog] = info['urls']['Blog']
     # when 'mixi'
     #   self.url = info['urls']['profile']
-    end
+    # end
 
     self.set_values_by_raw_info(omniauth['extra']['raw_info'])
   end
 
   def set_values_by_raw_info(raw_info)
-    case provider.to_s
+    # case provider.to_s
     # when 'twitter'
     #   self.other[:followers_count] = raw_info['followers_count']
     #   self.other[:friends_count] = raw_info['friends_count']
     #   self.other[:statuses_count] = raw_info['statuses_count']
     # when 'google'
     #   self.url = raw_info['link']
-    end
+    # end
 
     self.raw_info = raw_info.to_json
     self.save!
@@ -288,13 +288,15 @@ if @oauth_with_twitter
   gsub_file "config/omniauth.yml", /#   key: <%= ENV['TWITTER_APP_ID'] %>/, "  key: <%= ENV['TWITTER_APP_ID'] %>"
   gsub_file "config/omniauth.yml", /#   secret: <%= ENV['TWITTER_SECRET_KEY'] %>/, "  secret: <%= ENV['TWITTER_SECRET_KEY'] %>"
   gsub_file "config/initializers/devise.rb", /# config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/, "config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'"
-  uncomment_lines "app/models/social_profile.rb", /when 'twitter'/
-  uncomment_lines "app/models/social_profile.rb", /self.url = info['urls']['Twitter']/
-  uncomment_lines "app/models/social_profile.rb", /self.other[:location] = info['location']/
-  uncomment_lines "app/models/social_profile.rb", /self.other[:website] = info['urls']['Website']/
-  uncomment_lines "app/models/social_profile.rb", /self.other[:followers_count] = raw_info['followers_count']/
-  uncomment_lines "app/models/social_profile.rb", /self.other[:friends_count] = raw_info['friends_count']/
-  uncomment_lines "app/models/social_profile.rb", /self.other[:statuses_count] = raw_info['statuses_count']/
+  gsub_file "app/models/social_profile.rb", /# case provider.to_s'/, "case provider.to_s'"
+  gsub_file "app/models/social_profile.rb", /# when 'twitter'/, "when 'twitter'"
+  gsub_file "app/models/social_profile.rb", /#   self.url = info['urls']['Twitter']/, "  self.url = info['urls']['Twitter']"
+  gsub_file "app/models/social_profile.rb", /#   self.other[:location] = info['location']/, "  self.other[:location] = info['location']"
+  gsub_file "app/models/social_profile.rb", /#   self.other[:website] = info['urls']['Website']/, "  self.other[:website] = info['urls']['Website']"
+  gsub_file "app/models/social_profile.rb", /#   self.other[:followers_count] = raw_info['followers_count']/, "  self.other[:followers_count] = raw_info['followers_count']"
+  gsub_file "app/models/social_profile.rb", /#   self.other[:friends_count] = raw_info['friends_count']/, "  self.other[:friends_count] = raw_info['friends_count']"
+  gsub_file "app/models/social_profile.rb", /#   self.other[:statuses_count] = raw_info['statuses_count']/, "  self.other[:statuses_count] = raw_info['statuses_count']"
+  gsub_file "app/models/social_profile.rb", /# end/, "end"
   puts "\n"
 
   git :add => "."
