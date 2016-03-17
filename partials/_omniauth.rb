@@ -139,7 +139,7 @@ insert_into_file 'app/models/social_profile.rb',%(
 
     self.raw_info = raw_info.to_json
     self.save!
-  end), after: 'belongs_to :user'
+  end), after: "belongs_to :#{@parent_model_downcased}"
 copy_static_file "db/migrate/20160401000001_add_index_to_social_profile.rb"
 gsub_file "app/models/#{@parent_model_downcased}.rb", /# :confirmable, :lockable, :timeoutable and :omniauthable/, "# :confirmable, :lockable and :timeoutable"
 gsub_file "app/models/#{@parent_model_downcased}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :omniauthable,"
