@@ -269,10 +269,10 @@ if @oauth_with_facebook
   uncomment_lines 'Gemfile', /gem 'omniauth-facebook'/
   install_from_gemfile
   uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /def facebook; basic_action; end/
-  gsub_file "config/omniauth.yml", /# facebook:/, "facebook:"
-  gsub_file "config/omniauth.yml", /#   key: <%= ENV['FACEBOOK_APP_ID'] %>/, "  key: <%= ENV['FACEBOOK_APP_ID'] %>"
-  gsub_file "config/omniauth.yml", /#   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/, "  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>"
-  gsub_file "config/initializers/devise.rb", /# config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/, "config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'"
+  gsub_file "config/omniauth.yml", "# facebook:", "facebook:"
+  gsub_file "config/omniauth.yml", "#   key: <%= ENV['FACEBOOK_APP_ID'] %>", "  key: <%= ENV['FACEBOOK_APP_ID'] %>"
+  gsub_file "config/omniauth.yml", "#   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>", "  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>"
+  gsub_file "config/initializers/devise.rb", "# config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'", "config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'"
   puts "\n"
 
   git :add => "."
@@ -284,19 +284,19 @@ if @oauth_with_twitter
   uncomment_lines 'Gemfile', /gem 'omniauth-twitter'/
   install_from_gemfile
   uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /def twitter; basic_action; end/
-  gsub_file "config/omniauth.yml", /# twitter:/, "twitter:"
-  gsub_file "config/omniauth.yml", /#   key: <%= ENV['TWITTER_APP_ID'] %>/, "  key: <%= ENV['TWITTER_APP_ID'] %>"
-  gsub_file "config/omniauth.yml", /#   secret: <%= ENV['TWITTER_SECRET_KEY'] %>/, "  secret: <%= ENV['TWITTER_SECRET_KEY'] %>"
-  gsub_file "config/initializers/devise.rb", /# config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/, "config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'"
-  gsub_file "app/models/social_profile.rb", /# case provider.to_s'/, "case provider.to_s'"
-  gsub_file "app/models/social_profile.rb", /# when 'twitter'/, "when 'twitter'"
-  gsub_file "app/models/social_profile.rb", /#   self.url = info['urls']['Twitter']/, "  self.url = info['urls']['Twitter']"
-  gsub_file "app/models/social_profile.rb", /#   self.other[:location] = info['location']/, "  self.other[:location] = info['location']"
-  gsub_file "app/models/social_profile.rb", /#   self.other[:website] = info['urls']['Website']/, "  self.other[:website] = info['urls']['Website']"
-  gsub_file "app/models/social_profile.rb", /#   self.other[:followers_count] = raw_info['followers_count']/, "  self.other[:followers_count] = raw_info['followers_count']"
-  gsub_file "app/models/social_profile.rb", /#   self.other[:friends_count] = raw_info['friends_count']/, "  self.other[:friends_count] = raw_info['friends_count']"
-  gsub_file "app/models/social_profile.rb", /#   self.other[:statuses_count] = raw_info['statuses_count']/, "  self.other[:statuses_count] = raw_info['statuses_count']"
-  gsub_file "app/models/social_profile.rb", /# end/, "end"
+  gsub_file "config/omniauth.yml", "# twitter:", "twitter:"
+  gsub_file "config/omniauth.yml", "#   key: <%= ENV['TWITTER_APP_ID'] %>", "  key: <%= ENV['TWITTER_APP_ID'] %>"
+  gsub_file "config/omniauth.yml", "#   secret: <%= ENV['TWITTER_SECRET_KEY'] %>", "  secret: <%= ENV['TWITTER_SECRET_KEY'] %>"
+  gsub_file "config/initializers/devise.rb", "# config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'", "config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'"
+  gsub_file "app/models/social_profile.rb", "# case provider.to_s", "case provider.to_s"
+  gsub_file "app/models/social_profile.rb", "# when 'twitter'", "when 'twitter'"
+  gsub_file "app/models/social_profile.rb", "#   self.url = info['urls']['Twitter']", "  self.url = info['urls']['Twitter']"
+  gsub_file "app/models/social_profile.rb", "#   self.other[:location] = info['location']", "  self.other[:location] = info['location']"
+  gsub_file "app/models/social_profile.rb", "#   self.other[:website] = info['urls']['Website']", "  self.other[:website] = info['urls']['Website']"
+  gsub_file "app/models/social_profile.rb", "#   self.other[:followers_count] = raw_info['followers_count']", "  self.other[:followers_count] = raw_info['followers_count']"
+  gsub_file "app/models/social_profile.rb", "#   self.other[:friends_count] = raw_info['friends_count']", "  self.other[:friends_count] = raw_info['friends_count']"
+  gsub_file "app/models/social_profile.rb", "#   self.other[:statuses_count] = raw_info['statuses_count']", "  self.other[:statuses_count] = raw_info['statuses_count']"
+  gsub_file "app/models/social_profile.rb", "# end", "end"
   puts "\n"
 
   git :add => "."
