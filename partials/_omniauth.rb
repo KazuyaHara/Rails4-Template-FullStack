@@ -154,10 +154,8 @@ insert_into_file "app/models/#{parent_model.downcase}.rb",%(
   def social_profile(provider)
     social_profiles.select{ |sp| sp.provider == provider.to_s }.first
   end), after: ':recoverable, :rememberable, :trackable, :validatable'
-copy_static_file "db/migrate/20160401000002_add_dummy_email_to_user.rb"
 run "bundle exec rails g migration AddDummyEmailTo#{parent_model.capitalize} dummy_email:boolean:index"
-p generated_migration_file = find_in_source_paths("AddDummyEmailTo#{parent_model.capitalize}")
-gsub_file "#{generated_migration_file}", /add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean, default: false/, "add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean, default: false"
+gsub_file "#{Dir.glob("db/migrate/*.rb").last}.rb", /add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean/, "add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean, default: false"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
