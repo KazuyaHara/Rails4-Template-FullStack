@@ -17,6 +17,7 @@ That's it. ```initialize.rb``` handles Gemfile and application general settings.
 You should ...
 - set environment variables such as AWS access keys and buckets to '.env' or to your server.
 - set omniauth API key & Secret key to '.env' or to your server. (as needed)
+- set slack channel & webhook url to '.env' or to your server. (as needed)
 - push your code to the remote repository.
 - go to 'circle ci' & 'code climate' and integrate with your remote repository. (as needed)
 
