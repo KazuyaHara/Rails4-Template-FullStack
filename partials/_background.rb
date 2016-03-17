@@ -23,7 +23,7 @@ copy_static_file "config/initializers/sidekiq.rb"
 
 # add routing for sidekiq dashboard
 puts "Routing for sidekiq dashboard ..."
-if @using_devise && yes?('Hide dashboard from unauthorized users? ([yes or ELSE])')
+if @hide_dashboard
   namespace = ask("Type admin namespace like 'admin'")
   insert_into_file 'config/routes.rb',%(
 

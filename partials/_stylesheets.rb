@@ -5,8 +5,7 @@ copy_static_file 'app/assets/stylesheets/application.scss'
 puts "\n"
 
 # for Bootstrap
-if yes?('Use bootstrap4?([yes or ELSE])')
-@using_bootstrap = true
+if @using_bootstrap
 puts "Installing bootstrap4 ..."
 gsub_file 'Gemfile', /# gem 'bootstrap', '~> 4.0.0.alpha3'/, "gem 'bootstrap', '~> 4.0.0.alpha3'"
 gsub_file 'Gemfile', /# rails-assets-source/, "source 'https://rails-assets.org'"
@@ -24,8 +23,7 @@ puts "\n"
 end
 
 # for compass
-if yes?('Use compass?([yes or ELSE])')
-@using_compass = true
+if @using_compass
 puts "Installing compass ..."
 gsub_file 'Gemfile', /# gem 'compass-rails'/, "gem 'compass-rails'"
 install_from_gemfile
@@ -43,8 +41,7 @@ puts "\n"
 end
 
 # for Font Awesome
-if yes?('Use font awesome?([yes or ELSE])')
-@using_fontawesome = true
+if @using_fontawesome
 puts "Installing Font Awesome ..."
 gsub_file 'Gemfile', /# gem 'font-awesome-rails'/, "gem 'font-awesome-rails'"
 install_from_gemfile

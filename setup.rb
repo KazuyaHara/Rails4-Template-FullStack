@@ -31,12 +31,13 @@ puts "\n========================================================="
 puts " Rails4 FullStack Application Template Setup"
 puts "=========================================================\n"
 
+apply "#{@partials}/_questionnaires.rb"
 apply "#{@partials}/_database.rb"
 apply "#{@partials}/_puma.rb"
 apply "#{@partials}/_rspec.rb"
 apply "#{@partials}/_essentials.rb" # should run after '_rspec.rb'
 apply "#{@partials}/_stylesheets.rb"
-apply "#{@partials}/_devise.rb" if yes?('Use devise?([yes or ELSE])')
-apply "#{@partials}/_background.rb" if yes?('Use background jobs?([yes or ELSE])') # should run after '_devise.rb'
-apply "#{@partials}/_circleci.rb" if yes?('Use circle ci?([yes or ELSE])')
-apply "#{@partials}/_codeclimate.rb" if yes?('Use codeclimate?([yes or ELSE])') # should run after '_rspec.rb'
+apply "#{@partials}/_devise.rb" if @using_devise
+apply "#{@partials}/_background.rb" if @using_background # should run after '_devise.rb'
+apply "#{@partials}/_circleci.rb" if @using_circleci
+apply "#{@partials}/_codeclimate.rb" if @using_codeclimate # should run after '_rspec.rb'

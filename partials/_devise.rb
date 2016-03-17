@@ -1,6 +1,3 @@
-# set flag
-@using_devise = true
-
 # update Gemfile
 puts "Installing related gems to Devise ..."
 uncomment_lines 'Gemfile', /gem 'bcrypt', '~> 3.1.7'/
@@ -82,4 +79,4 @@ git :add => "."
 git :commit => "-aqm 'install devise'"
 
 # Omniauth
-apply "#{@partials}/_omniauth.rb" if yes?('use omniauth?([yes or ELSE])')
+apply "#{@partials}/_omniauth.rb" if @using_omniauth
