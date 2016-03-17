@@ -167,6 +167,7 @@ puts "\n"
 # Update StrongParamater for parent model
 puts "Updating strong paramater for #{@parent_model} ..."
 copy_static_file "app/models/concerns/devise_sanitizer.rb"
+remove_file "app/models/concerns/.keep"
 gsub_file "app/models/concerns/devise_sanitizer.rb", /User::ParameterSanitizer/, "#{@parent_model}::ParameterSanitizer"
 @strong_paramater_sanitilizer = "#{@parent_model}::ParameterSanitizer.new(#{@parent_model}, :#{@parent_model_downcased}, params)"
 insert_into_file "app/controllers/application_controller.rb",%(

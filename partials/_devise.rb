@@ -26,6 +26,7 @@ puts "\n"
 # setup Model
 puts "Generating authentication model ..."
 run "bundle exec rails g devise #{@model} #{@columns}; bundle exec rake db:migrate; bundle exec annotate"
+remove_file "app/models/.keep"
 puts "\n"
 
 
