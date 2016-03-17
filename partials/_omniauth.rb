@@ -51,45 +51,43 @@ puts "\n"
 
 # Create SocialProfile model
 puts "Creating SocialProfile model ..."
-parent_model = ask("Type parent model name you generated in above process (type like 'user')")
 
-unless ActiveRecord::Base.connection.tables.include?("#{parent_model.pluralize.downcase}")
+unless @parent_model_exists
   # setup Model
-  puts "Generating #{parent_model.capitalize} model ..."
-  columns = ask("If you need, type column names for #{parent_model.capitalize} model (like 'nick_name description:text')")
-  run "bundle exec rails g devise #{parent_model.capitalize} #{columns}; bundle exec rake db:migrate; bundle exec annotate"
+  puts "Generating #{@parent_model} model ..."
+  run "bundle exec rails g devise #{@parent_model} #{@parent_columns}; bundle exec rake db:migrate; bundle exec annotate"
   puts "\n"
 
   # setup View
-  puts "Generating #{parent_model.capitalize} views ..."
-  run "bundle exec rails g devise:views #{parent_model.pluralize} -v registrations sessions passwords; bundle exec rake haml:replace_erbs"
+  puts "Generating #{@parent_model} views ..."
+  run "bundle exec rails g devise:views #{@parent_resources} -v registrations sessions passwords; bundle exec rake haml:replace_erbs"
   puts "\n"
 
   # setup Controller
-  puts "Generating #{parent_model.capitalize} controllers ..."
-  run "bundle exec rails g devise:controllers #{parent_model.pluralize}; bundle exec annotate"
-  remove_file "app/controllers/#{parent_model.pluralize}/confirmations_controller.rb"
-  remove_file "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb"
-  remove_file "app/controllers/#{parent_model.pluralize}/unlocks_controller.rb"
+  puts "Generating #{@parent_model} controllers ..."
+  run "bundle exec rails g devise:controllers #{@parent_resources}; bundle exec annotate"
+  remove_file "app/controllers/#{@parent_resources}/confirmations_controller.rb"
+  remove_file "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb"
+  remove_file "app/controllers/#{@parent_resources}/unlocks_controller.rb"
   puts "\n"
 
   # Routing
   puts "Adding routes ..."
-  gsub_file('config/routes.rb', /  devise_for :#{parent_model.pluralize}\n/, '')
+  gsub_file('config/routes.rb', /  devise_for :#{@parent_resources}\n/, '')
   insert_into_file 'config/routes.rb',%(
 
     # Authentication
-    devise_for :#{parent_model.pluralize}, controllers: {
-      registrations:      '#{parent_model.pluralize}/registrations',
-      sessions:           '#{parent_model.pluralize}/sessions',
-      passwords:          '#{parent_model.pluralize}/passwords'
+    devise_for :#{@parent_resources}, controllers: {
+      registrations:      '#{@parent_resources}/registrations',
+      sessions:           '#{@parent_resources}/sessions',
+      passwords:          '#{@parent_resources}/passwords'
     }
     ), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
   run "bundle exec annotate --routes"
   puts "\n"
 end
 
-run "bundle exec rails g model SocialProfile #{parent_model.downcase}:references provider uid access_token access_secret name nickname email url image_url description other:text credentials:text raw_info:text"
+run "bundle exec rails g model SocialProfile #{@parent_model_downcased}:references provider uid access_token access_secret name nickname email url image_url description other:text credentials:text raw_info:text"
 @uid = "uid"
 insert_into_file 'app/models/social_profile.rb',%(
   store :other
@@ -143,39 +141,39 @@ insert_into_file 'app/models/social_profile.rb',%(
     self.save!
   end), after: 'belongs_to :user'
 copy_static_file "db/migrate/20160401000001_add_index_to_social_profile.rb"
-gsub_file "app/models/#{parent_model.downcase}.rb", /# :confirmable, :lockable, :timeoutable and :omniauthable/, "# :confirmable, :lockable and :timeoutable"
-gsub_file "app/models/#{parent_model.downcase}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :omniauthable,"
+gsub_file "app/models/#{@parent_model_downcased}.rb", /# :confirmable, :lockable, :timeoutable and :omniauthable/, "# :confirmable, :lockable and :timeoutable"
+gsub_file "app/models/#{@parent_model_downcased}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :omniauthable,"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
 
 
 # Update parent model
-puts "Updating #{parent_model.capitalize} model ..."
-insert_into_file "app/models/#{parent_model.downcase}.rb",%(
+puts "Updating #{@parent_model} model ..."
+insert_into_file "app/models/#{@parent_model_downcased}.rb",%(
 
   has_many :social_profiles, dependent: :destroy
 
   def social_profile(provider)
     social_profiles.select{ |sp| sp.provider == provider.to_s }.first
   end), after: ':recoverable, :rememberable, :trackable, :validatable'
-run "bundle exec rails g migration AddDummyEmailTo#{parent_model.capitalize} dummy_email:boolean:index"
-gsub_file "#{Dir.glob("db/migrate/*.rb").last}", /add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean/, "add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean, default: false"
+run "bundle exec rails g migration AddDummyEmailTo#{@parent_model} dummy_email:boolean:index"
+gsub_file "#{Dir.glob("db/migrate/*.rb").last}", /add_column :#{@parent_resources}, :dummy_email, :boolean/, "add_column :#{@parent_resources}, :dummy_email, :boolean, default: false"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
 
 
 # Update StrongParamater for parent model
-puts "Updating strong paramater for #{parent_model.capitalize} ..."
+puts "Updating strong paramater for #{@parent_model} ..."
 copy_static_file "app/models/concerns/devise_sanitizer.rb"
-gsub_file "app/models/concerns/devise_sanitizer.rb", /User::ParameterSanitizer/, "#{parent_model.capitalize}::ParameterSanitizer"
-@strong_paramater_sanitilizer = "#{parent_model.capitalize}::ParameterSanitizer.new(#{parent_model.capitalize}, :#{parent_model.downcase}, params)"
+gsub_file "app/models/concerns/devise_sanitizer.rb", /User::ParameterSanitizer/, "#{@parent_model}::ParameterSanitizer"
+@strong_paramater_sanitilizer = "#{@parent_model}::ParameterSanitizer.new(#{@parent_model}, :#{@parent_model_downcased}, params)"
 insert_into_file "app/controllers/application_controller.rb",%(
 
   protected
     def devise_parameter_sanitizer
-      if resource_class == #{parent_model.capitalize}
+      if resource_class == #{@parent_model}
         #{@strong_paramater_sanitilizer}
       else
         super
@@ -187,11 +185,11 @@ puts "\n"
 
 # Create OmniauthCallbacks controller
 puts "Creating OmniauthCallbacks controller ..."
-run "bundle exec rails g controller #{parent_model.pluralize.downcase}/OmniauthCallbacks"
+run "bundle exec rails g controller #{@parent_resources}/OmniauthCallbacks"
 @provider = "@omniauth['provider']"
 @dummy = '#{name}-#{SecureRandom.hex(10)}@example.com'
-@sign_in_path = "sign_in(:#{parent_model.downcase}, @profile.#{parent_model.downcase})"
-insert_into_file "app/controllers/#{parent_model.pluralize.downcase}/omniauth_callbacks_controller.rb",%(
+@sign_in_path = "sign_in(:#{@parent_model_downcased}, @profile.#{@parent_model_downcased})"
+insert_into_file "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb",%(
   # def facebook; basic_action; end
   # def twitter; basic_action; end
   # def google; basic_action; end
@@ -212,7 +210,7 @@ insert_into_file "app/controllers/#{parent_model.pluralize.downcase}/omniauth_ca
           begin
             @profile = SocialProfile.where(provider: @omniauth['provider'], uid: @omniauth['uid']).new
             @user_data = set_user_data
-            @profile.user = current_user || #{parent_model.capitalize}.create!(email: @user_data[:email], password: Devise.friendly_token[0,20], dummy_email: @user_data[:dummy_email])
+            @profile.#{@parent_model_downcased} = current_#{@parent_model_downcased} || #{@parent_model}.create!(email: @user_data[:email], password: Devise.friendly_token[0,20], dummy_email: @user_data[:dummy_email])
             @profile.save!
           rescue => e
             logger.error e
@@ -224,8 +222,8 @@ insert_into_file "app/controllers/#{parent_model.pluralize.downcase}/omniauth_ca
           end
         end
 
-        if current_#{parent_model.downcase}
-          return redirect_to :back, alert: "この#{@provider} IDはすでに別のアカウントで使用されています" if current_#{parent_model.downcase} != @profile.#{parent_model.downcase}
+        if current_#{@parent_model_downcased}
+          return redirect_to :back, alert: "この#{@provider} IDはすでに別のアカウントで使用されています" if current_#{@parent_model_downcased} != @profile.#{@parent_model_downcased}
         else
           #{@sign_in_path}
         end
@@ -242,7 +240,7 @@ insert_into_file "app/controllers/#{parent_model.pluralize.downcase}/omniauth_ca
       email = @omniauth['info']['email'] ||= "#{@dummy}"
       dummy_flag = @omniauth['provider'] == "twitter" ? "true" : "false"
       {name: name, email: email, dummy_email: dummy_flag}
-    end), after: "class #{parent_model.pluralize.capitalize}::OmniauthCallbacksController < Devise::OmniauthCallbacksController"
+    end), after: "class #{@parent_model_capitalized}::OmniauthCallbacksController < Devise::OmniauthCallbacksController"
 puts "\n"
 
 
@@ -250,7 +248,7 @@ puts "\n"
 # Add routing
 puts "Adding routes ..."
 insert_into_file 'config/routes.rb',%(
-    omniauth_callbacks: '#{parent_model.pluralize.downcase}/omniauth_callbacks',), after: "devise_for :#{parent_model.pluralize.downcase}, controllers: {"
+    omniauth_callbacks: '#{@parent_resources}/omniauth_callbacks',), after: "devise_for :#{@parent_resources}, controllers: {"
 run "bundle exec annotate --routes"
 puts "\n"
 
@@ -264,10 +262,10 @@ puts "\n"
 
 
 # Select provider
-if yes?('oauth with facebook?([yes or ELSE])')
+if @oauth_with_facebook
   uncomment_lines 'Gemfile', /gem 'omniauth-facebook'/
   install_from_gemfile
-  uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /def facebook; basic_action; end/
+  uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /def facebook; basic_action; end/
   uncomment_lines "config/omniauth.yml", /facebook:/
   uncomment_lines "config/omniauth.yml", /  key: <%= ENV['FACEBOOK_APP_ID'] %>/
   uncomment_lines "config/omniauth.yml", /  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
@@ -278,10 +276,10 @@ if yes?('oauth with facebook?([yes or ELSE])')
   git :commit => "-aqm 'integrate with facebook omniauth'"
   puts "\n"
 end
-if yes?('oauth with Twitter?([yes or ELSE])')
+if @oauth_with_twitter
   uncomment_lines 'Gemfile', /gem 'omniauth-twitter'/
   install_from_gemfile
-  uncomment_lines "app/controllers/#{parent_model.pluralize}/omniauth_callbacks_controller.rb", /# def twitter; basic_action; end/
+  uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /# def twitter; basic_action; end/
   uncomment_lines "config/omniauth.yml", /twitter:/
   uncomment_lines "config/omniauth.yml", /  key: <%= ENV['TWITTER_APP_ID'] %>/
   uncomment_lines "config/omniauth.yml", /  secret: <%= ENV['TWITTER_SECRET_KEY'] %>/

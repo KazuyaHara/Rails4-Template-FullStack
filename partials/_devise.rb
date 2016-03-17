@@ -25,17 +25,14 @@ puts "\n"
 
 # setup Model
 puts "Generating authentication model ..."
-model = ask("Type resource name (like 'Admin')")
-columns = ask("If you need, type column names for #{model} model (like 'nick_name description:text')")
-resources = model.pluralize.downcase
-run "bundle exec rails g devise #{model} #{columns}; bundle exec rake db:migrate; bundle exec annotate"
+run "bundle exec rails g devise #{@model} #{@columns}; bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
 
 
 # setup View
 puts "Generating views ..."
-run "bundle exec rails g devise:views #{resources} -v registrations sessions passwords; bundle exec rake haml:replace_erbs"
+run "bundle exec rails g devise:views #{@resources} -v registrations sessions passwords; bundle exec rake haml:replace_erbs"
 uncomment_lines 'config/initializers/devise.rb', /config.scoped_views = true/
 puts "\n"
 
@@ -43,24 +40,24 @@ puts "\n"
 
 # setup Controller
 puts "Generating controllers ..."
-run "bundle exec rails g devise:controllers #{resources}; bundle exec annotate"
-remove_file "app/controllers/#{resources}/confirmations_controller.rb"
-remove_file "app/controllers/#{resources}/omniauth_callbacks_controller.rb"
-remove_file "app/controllers/#{resources}/unlocks_controller.rb"
+run "bundle exec rails g devise:controllers #{@resources}; bundle exec annotate"
+remove_file "app/controllers/#{@resources}/confirmations_controller.rb"
+remove_file "app/controllers/#{@resources}/omniauth_callbacks_controller.rb"
+remove_file "app/controllers/#{@resources}/unlocks_controller.rb"
 puts "\n"
 
 
 
 # Routing
 puts "Adding routes ..."
-gsub_file('config/routes.rb', /  devise_for :#{resources}\n/, '')
+gsub_file('config/routes.rb', /  devise_for :#{@resources}\n/, '')
 insert_into_file 'config/routes.rb',%(
 
   # Authentication
-  devise_for :#{resources}, controllers: {
-    registrations:      '#{resources}/registrations',
-    sessions:           '#{resources}/sessions',
-    passwords:          '#{resources}/passwords'
+  devise_for :#{@resources}, controllers: {
+    registrations:      '#{@resources}/registrations',
+    sessions:           '#{@resources}/sessions',
+    passwords:          '#{@resources}/passwords'
   }), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
 run "bundle exec annotate --routes"
 puts "\n"
