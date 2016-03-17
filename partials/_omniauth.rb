@@ -269,10 +269,10 @@ if @oauth_with_facebook
   uncomment_lines 'Gemfile', /gem 'omniauth-facebook'/
   install_from_gemfile
   uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /def facebook; basic_action; end/
-  uncomment_lines "config/omniauth.yml", /facebook:/
-  uncomment_lines "config/omniauth.yml", /key: <%= ENV['FACEBOOK_APP_ID'] %>/
-  uncomment_lines "config/omniauth.yml", /secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/
-  uncomment_lines "config/initializers/devise.rb", /config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/
+  gsub_file "config/omniauth.yml", /# facebook:/, "facebook:"
+  gsub_file "config/omniauth.yml", /#   key: <%= ENV['FACEBOOK_APP_ID'] %>/, "  key: <%= ENV['FACEBOOK_APP_ID'] %>"
+  gsub_file "config/omniauth.yml", /#   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>/, "  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>"
+  gsub_file "config/initializers/devise.rb", /# config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'/, "config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'"
   puts "\n"
 
   git :add => "."
@@ -283,11 +283,11 @@ if @oauth_with_twitter
   puts "Adding omniauth-twitter ..."
   uncomment_lines 'Gemfile', /gem 'omniauth-twitter'/
   install_from_gemfile
-  uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /# def twitter; basic_action; end/
-  uncomment_lines "config/omniauth.yml", /twitter:/
-  uncomment_lines "config/omniauth.yml", /key: <%= ENV['TWITTER_APP_ID'] %>/
-  uncomment_lines "config/omniauth.yml", /secret: <%= ENV['TWITTER_SECRET_KEY'] %>/
-  uncomment_lines "config/initializers/devise.rb", /config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/
+  uncomment_lines "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /def twitter; basic_action; end/
+  gsub_file "config/omniauth.yml", /# twitter:/, "twitter:"
+  gsub_file "config/omniauth.yml", /#   key: <%= ENV['TWITTER_APP_ID'] %>/, "  key: <%= ENV['TWITTER_APP_ID'] %>"
+  gsub_file "config/omniauth.yml", /#   secret: <%= ENV['TWITTER_SECRET_KEY'] %>/, "  secret: <%= ENV['TWITTER_SECRET_KEY'] %>"
+  gsub_file "config/initializers/devise.rb", /# config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'/, "config.omniauth :twitter, OAUTH_CONFIG[:twitter]['key'], OAUTH_CONFIG[:twitter]['secret'], image_size: 'original'"
   uncomment_lines "app/models/social_profile.rb", /when 'twitter'/
   uncomment_lines "app/models/social_profile.rb", /self.url = info['urls']['Twitter']/
   uncomment_lines "app/models/social_profile.rb", /self.other[:location] = info['location']/
