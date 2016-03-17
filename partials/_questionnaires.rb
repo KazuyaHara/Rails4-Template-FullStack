@@ -36,8 +36,8 @@ end
 if @using_omniauth
   @parent_original = ask("  Type parent model name you generated in above process (type like 'user')")
   @parent_model = singularized_and_capitalized(@parent_original)
+  @parent_model_pluralized = pluralized_and_capitalized(@parent_original)
   @parent_model_downcased = singularized_and_downcased(@parent_original)
-  @parent_model_capitalized = singularized_and_capitalized(@parent_original)
   @parent_resources = pluralized_and_downcased(@parent_original)
   if @parent_model == @model
     @parent_model_exists = true

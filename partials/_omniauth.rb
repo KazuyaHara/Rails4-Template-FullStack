@@ -240,7 +240,7 @@ insert_into_file "app/controllers/#{@parent_resources}/omniauth_callbacks_contro
       email = @omniauth['info']['email'] ||= "#{@dummy}"
       dummy_flag = @omniauth['provider'] == "twitter" ? "true" : "false"
       {name: name, email: email, dummy_email: dummy_flag}
-    end), after: "class #{@parent_model_capitalized}::OmniauthCallbacksController < Devise::OmniauthCallbacksController"
+    end), after: "class #{@parent_model_pluralized}::OmniauthCallbacksController < Devise::OmniauthCallbacksController"
 puts "\n"
 
 
