@@ -51,7 +51,9 @@ end
 # about background jobs
 @using_background = true if yes?('Use background jobs?([yes or ELSE])')
 @hide_dashboard = true if @using_background && yes?('Hide dashboard from unauthorized users? ([yes or ELSE])')
+@namespace = ask("Specify namespace like 'admin'") if @hide_dashboard
 
 # about development flow
 @using_circleci = true if yes?('Use circle ci?([yes or ELSE])')
+@ruby_version = ask('Ruby version? (specify like "2.3.0")') if @using_circleci
 @using_codeclimate = true if yes?('Use codeclimate?([yes or ELSE])')

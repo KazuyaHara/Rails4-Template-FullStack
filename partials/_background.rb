@@ -24,12 +24,11 @@ copy_static_file "config/initializers/sidekiq.rb"
 # add routing for sidekiq dashboard
 puts "Routing for sidekiq dashboard ..."
 if @hide_dashboard
-  namespace = ask("Type admin namespace like 'admin'")
   insert_into_file 'config/routes.rb',%(
 
   # sidekiq dashboard
   require 'sidekiq/web'
-  authenticate :#{namespace} do
+  authenticate :#{@namespace} do
     mount Sidekiq::Web, at: '/sidekiq'
   end), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
 else
