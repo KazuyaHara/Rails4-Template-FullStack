@@ -63,3 +63,7 @@ insert_into_file 'app/assets/stylesheets/application.scss',%(
 end
 puts "\n"
 end
+
+git :add => '.'
+git :commit => "-aqm 'update styles'"
+puts "\n"
