@@ -138,8 +138,8 @@ insert_into_file 'app/models/social_profile.rb',%(
     self.save!
   end), after: 'belongs_to :user'
 copy_static_file "db/migrate/20160401000001_add_index_to_social_profile.rb"
-gsub_file "app/models/#{parent_model}.rb", /# :confirmable, :lockable, :timeoutable and :omniauthable/, "# :confirmable, :lockable and :timeoutable"
-gsub_file "app/models/#{parent_model}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :confirmable,"
+gsub_file "app/models/#{parent_model.downcase}.rb", /# :confirmable, :lockable, :timeoutable and :omniauthable/, "# :confirmable, :lockable and :timeoutable"
+gsub_file "app/models/#{parent_model.downcase}.rb", /devise :database_authenticatable, :registerable,/, "devise :database_authenticatable, :registerable, :confirmable,"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
@@ -155,8 +155,9 @@ insert_into_file "app/models/#{parent_model.downcase}.rb",%(
     social_profiles.select{ |sp| sp.provider == provider.to_s }.first
   end), after: ':recoverable, :rememberable, :trackable, :validatable'
 copy_static_file "db/migrate/20160401000002_add_dummy_email_to_user.rb"
-gsub_file "db/migrate/20160401000002_add_dummy_email_to_user.rb", /ToUser/, "To#{parent_model.capitalize}"
-gsub_file "db/migrate/20160401000002_add_dummy_email_to_user.rb", /users/, "#{parent_model.pluralize.downcase}"
+run "bundle exec rails g migration AddDummyEmailTo#{parent_model.capitalize} dummy_email:boolean:index"
+p generated_migration_file = find_in_source_paths("AddDummyEmailTo#{parent_model.capitalize}")
+gsub_file "#{generated_migration_file}", /add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean, default: false/, "add_column :#{parent_model.pluralize.downcase}, :dummy_email, :boolean, default: false"
 run "bundle exec rake db:migrate; bundle exec annotate"
 puts "\n"
 
