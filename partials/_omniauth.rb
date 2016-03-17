@@ -186,6 +186,8 @@ puts "\n"
 # Create OmniauthCallbacks controller
 puts "Creating OmniauthCallbacks controller ..."
 run "bundle exec rails g controller #{@parent_resources}/OmniauthCallbacks"
+remove_dir "app/views/#{@parent_resources}/omniauth_callbacks"
+gsub_file "app/controllers/#{@parent_resources}/omniauth_callbacks_controller.rb", /ApplicationController/, "Devise::OmniauthCallbacksController"
 @provider = "@omniauth['provider']"
 @dummy = '#{name}-#{SecureRandom.hex(10)}@example.com'
 @sign_in_path = "sign_in(:#{@parent_model_downcased}, @profile.#{@parent_model_downcased})"
