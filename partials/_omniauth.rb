@@ -1,3 +1,8 @@
+# Install omniauth gem
+puts "Installing gem 'omniauth' ..."
+uncomment_lines 'Gemfile', /gem 'omniauth'/
+install_from_gemfile
+
 # Install settings
 puts "Adding setting files ..."
 copy_static_file "config/omniauth.yml"
