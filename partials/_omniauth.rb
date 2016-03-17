@@ -274,6 +274,11 @@ if @oauth_with_facebook
   gsub_file "config/omniauth.yml", "#   key: <%= ENV['FACEBOOK_APP_ID'] %>", "  key: <%= ENV['FACEBOOK_APP_ID'] %>"
   gsub_file "config/omniauth.yml", "#   secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>", "  secret: <%= ENV['FACEBOOK_SECRET_KEY'] %>"
   gsub_file "config/initializers/devise.rb", "# config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'", "config.omniauth :facebook, OAUTH_CONFIG[:facebook]['key'], OAUTH_CONFIG[:facebook]['secret'], scope: 'email', image_size: 'large'"
+  insert_into_file '.env',%(
+
+  # Omniauth Setting
+  FACEBOOK_APP_ID = 'XXXXXXXXXXXX'
+  FACEBOOK_SECRET_KEY = 'XXXXXXXXXXXX'), after: "SITEMAP_HOST = 'http://yourbucket.s3-ap-northeast-1.amazonaws.com'"
   puts "\n"
 
   git :add => "."
@@ -298,6 +303,17 @@ if @oauth_with_twitter
   gsub_file "app/models/social_profile.rb", "#   self.other[:friends_count] = raw_info['friends_count']", "  self.other[:friends_count] = raw_info['friends_count']"
   gsub_file "app/models/social_profile.rb", "#   self.other[:statuses_count] = raw_info['statuses_count']", "  self.other[:statuses_count] = raw_info['statuses_count']"
   gsub_file "app/models/social_profile.rb", "# end", "end"
+  if @oauth_with_facebook
+    insert_into_file '.env',%(
+    TWITTER_APP_ID = 'XXXXXXXXXXXX'
+    TWITTER_SECRET_KEY = 'XXXXXXXXXXXX'), after: "FACEBOOK_SECRET_KEY = 'XXXXXXXXXXXX'"
+  else
+    insert_into_file '.env',%(
+
+    # Omniauth Setting
+    TWITTER_APP_ID = 'XXXXXXXXXXXX'
+    TWITTER_SECRET_KEY = 'XXXXXXXXXXXX'), after: "SITEMAP_HOST = 'http://yourbucket.s3-ap-northeast-1.amazonaws.com'"
+  end
   puts "\n"
 
   git :add => "."
