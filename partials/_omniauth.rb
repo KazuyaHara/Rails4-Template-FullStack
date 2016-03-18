@@ -164,26 +164,6 @@ puts "\n"
 
 
 
-# Update StrongParamater for parent model
-puts "Updating strong paramater for #{@parent_model} ..."
-copy_static_file "app/models/concerns/devise_sanitizer.rb"
-remove_file "app/models/concerns/.keep"
-gsub_file "app/models/concerns/devise_sanitizer.rb", /User::ParameterSanitizer/, "#{@parent_model}::ParameterSanitizer"
-@strong_paramater_sanitilizer = "#{@parent_model}::ParameterSanitizer.new(#{@parent_model}, :#{@parent_model_downcased}, params)"
-insert_into_file "app/controllers/application_controller.rb",%(
-
-  protected
-    def devise_parameter_sanitizer
-      if resource_class == #{@parent_model}
-        #{@strong_paramater_sanitilizer}
-      else
-        super
-      end
-    end), after: 'protect_from_forgery with: :exception'
-puts "\n"
-
-
-
 # Create OmniauthCallbacks controller
 puts "Creating OmniauthCallbacks controller ..."
 run "bundle exec rails g controller #{@parent_resources}/OmniauthCallbacks"

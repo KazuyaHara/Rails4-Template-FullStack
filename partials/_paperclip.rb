@@ -44,11 +44,6 @@ if @add_paperclip_now
   gsub_file "config/settings/test.yml", "XXX_image_path: ':class/images/:id/:filename/:style'", "#{@paperclip_model_downcased}_image_path: ':class/images/:id/:filename/:style'"
   puts "\n"
 
-  # update strong paramaters
-  puts "Updating strong paramaters ..."
-  gsub_file "app/models/concerns/devise_sanitizer.rb", "default_paramiters.permit(:dummy_email)", "default_paramiters.permit(:dummy_email, :#{@paperclip_column})"
-  puts "\n"
-
   # update sidekiq config
   puts "Updating sidekiq config ..."
   insert_into_file "config/sidekiq.yml",%(
