@@ -1,6 +1,5 @@
 # Rails4 Template FullStack
-Full-Stack application template for Rails 4. **Pull Requests are welcome!**
-This template is optimized to Postgresql & Heroku Deployment. So please replace words as necessary.
+Full-Stack application template for Rails 4. This template is optimized to Postgresql & Heroku Deployment. So please replace words as necessary. **Pull Requests are welcome!**
 
 ## Basic features
 This application
