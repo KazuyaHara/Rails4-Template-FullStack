@@ -47,4 +47,4 @@ apply "#{@partials}/_codeclimate.rb" if @using_codeclimate # should run after '_
 
 puts "\n\n\n========================================================="
 puts " Setup completed. Let's code!!"
-puts "=========================================================\n\n\n"
+puts "=========================================================\n\n\n\n\n"
