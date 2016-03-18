@@ -1,5 +1,14 @@
 # Rails4 Template FullStack
 Full-Stack application template for Rails 4. **Pull Requests are welcome!**
+This template is optimized to Postgresql & Heroku Deployment. So please replace words as necessary.
+
+## Basic features
+This application
+- run testing with RSpec, Spring & Guard. And you can use faker, factory_girl & shoulda-matchers
+- has annotate, bulletm better_errors & seed_fu that will support your happy coding
+- is integrated with friendly_id, kaminari & paranoia
+
+Plus, other useful gems are on Gemfile and waiting for you!
 
 ## Installation
 Consider your application name deeply, and then run
@@ -12,6 +21,24 @@ $ bin/rake rails:template LOCATION=../Rails4-Template-FullStack/setup.rb
 ```
 
 That's it. ```initialize.rb``` handles Gemfile and application general settings. And ```setup.rb``` handles gem settings.
+
+### Options
+You can use these gems as you needed. Please answer to questions 'yes'.
+
+#### for styling
+- bootstrap (ver 4.0.0.alpha3)
+- compass
+- font-swrsome
+
+#### for authentication
+- devise
+- cancancan
+- omniauth (facebook & twitter)
+
+#### for background jobs
+- sidekiq
+
+...and more! As for the detail, please check Gemfile.
 
 ## After Installation
 You should ...
