@@ -1,6 +1,7 @@
 # copied base file
 copy_static_file "app/models/concerns/devise_sanitizer.rb"
 remove_file "app/models/concerns/.keep"
+puts "\n"
 
 # need two sanitizers for omniauth model & paperclip model
 if @using_omniauth && @using_paperclip && (@parent_model != @paperclip_model)
