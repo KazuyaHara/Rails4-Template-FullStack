@@ -68,6 +68,9 @@ if @add_paperclip_now
   end
 end
 
+# about notification
+@using_notification = true if yes?('Use exception notification?([yes or ELSE]):')
+
 # about development flow
 @using_circleci = true if yes?('Use circle ci?([yes or ELSE]):')
 @ruby_version = ask('Ruby version? (specify like "2.3.0"):') if @using_circleci
