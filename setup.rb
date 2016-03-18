@@ -44,3 +44,7 @@ apply "#{@partials}/_paramater_sanitizer.rb" if @using_omniauth || @using_paperc
 apply "#{@partials}/_notification.rb" if @using_notification
 apply "#{@partials}/_circleci.rb" if @using_circleci
 apply "#{@partials}/_codeclimate.rb" if @using_codeclimate # should run after '_rspec.rb'
+
+puts "\n\n\n========================================================="
+puts " Setup completed. Let's code!!"
+puts "=========================================================\n\n\n"
