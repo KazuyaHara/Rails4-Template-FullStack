@@ -12,23 +12,23 @@ copy_static_file("config/settings/production.yml")
 copy_static_file("config/settings/test.yml")
 insert_into_file 'config/application.rb',%(
 
-# Global defaults for Paperclip
-  config.paperclip_defaults = {
-    storage: :s3,
-    s3_credentials: {access_key_id: Settings.aws.access_key_id, secret_access_key: Settings.aws.secret_access_key},
-    url: ':s3_domain_url',
-    s3_permissions: "public-read",
-    s3_region: ENV['S3_REGION'],
-    bucket: Settings.s3.public.bucket,
-    path: '/:class/:attachment/:id_partition/:style/:filename'
-  }), after: "config.active_job.queue_adapter = :sidekiq"
+    # Global defaults for Paperclip
+    config.paperclip_defaults = {
+      storage: :s3,
+      s3_credentials: {access_key_id: Settings.aws.access_key_id, secret_access_key: Settings.aws.secret_access_key},
+      url: ':s3_domain_url',
+      s3_permissions: "public-read",
+      s3_region: ENV['S3_REGION'],
+      bucket: Settings.s3.public.bucket,
+      path: '/:class/:attachment/:id_partition/:style/:filename'
+    }), after: "config.active_job.queue_adapter = :sidekiq"
 puts "\n"
 
 # attach to a model
 if @add_paperclip_now
   puts "Generating related columns ..."
   run "bundle exec rails g paperclip #{@paperclip_model_downcased} #{@paperclip_column}; bundle exec rails g migration AddProcessingTo#{@paperclip_model} #{@paperclip_column}_processing:boolean"
-  run "bundle exec rake db:migrate; bundle annotate"
+  run "bundle exec rake db:migrate; bundle exec annotate"
   puts "\n"
 
   puts "Attaching to a model ..."
@@ -46,7 +46,7 @@ if @add_paperclip_now
 
   # update strong paramaters
   puts "Updating strong paramaters ..."
-  gsub_file "app/controllers/#{@paperclip_resources}_controller.rb", ".permit(", ".permit(:#{@paperclip_column}, "
+  gsub_file "app/models/concerns/devise_sanitizer.rb", "default_paramiters.permit(:dummy_email)", "default_paramiters.permit(:dummy_email, :#{@paperclip_column})"
   puts "\n"
 
   # update sidekiq config
