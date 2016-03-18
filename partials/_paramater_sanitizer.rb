@@ -33,16 +33,16 @@ if @using_omniauth && @using_paperclip && (@parent_model != @paperclip_model)
   @strong_paramater_for_paperclip = "#{@paperclip_model}::ParameterSanitizer.new(#{@paperclip_model}, :#{@paperclip_model_downcased}, params)"
   insert_into_file "app/controllers/application_controller.rb",%(
 
-    protected
-      def devise_parameter_sanitizer
-        if resource_class == #{@parent_model}
-          #{@strong_paramater_for_omniauth}
-        elsif resource_class == #{@paperclip_model}
-          #{@strong_paramater_for_paperclip}
-        else
-          super
-        end
-      end), after: 'protect_from_forgery with: :exception'
+  protected
+    def devise_parameter_sanitizer
+      if resource_class == #{@parent_model}
+        #{@strong_paramater_for_omniauth}
+      elsif resource_class == #{@paperclip_model}
+        #{@strong_paramater_for_paperclip}
+      else
+        super
+      end
+    end), after: 'protect_from_forgery with: :exception'
   puts "\n"
 
 # need one sanitizer for omniauth model
@@ -56,14 +56,14 @@ elsif (@using_omniauth && @using_paperclip && (@parent_model == @paperclip_model
   @strong_paramater_for_omniauth = "#{@parent_model}::ParameterSanitizer.new(#{@parent_model}, :#{@parent_model_downcased}, params)"
   insert_into_file "app/controllers/application_controller.rb",%(
 
-    protected
-      def devise_parameter_sanitizer
-        if resource_class == #{@parent_model}
-          #{@strong_paramater_for_omniauth}
-        else
-          super
-        end
-      end), after: 'protect_from_forgery with: :exception'
+  protected
+    def devise_parameter_sanitizer
+      if resource_class == #{@parent_model}
+        #{@strong_paramater_for_omniauth}
+      else
+        super
+      end
+    end), after: 'protect_from_forgery with: :exception'
   puts "\n"
 
 # need one sanitizer for paperclip_model
@@ -78,14 +78,14 @@ elsif !@using_omniauth && @using_paperclip
   @strong_paramater_for_paperclip = "#{@paperclip_model}::ParameterSanitizer.new(#{@paperclip_model}, :#{@paperclip_model_downcased}, params)"
   insert_into_file "app/controllers/application_controller.rb",%(
 
-    protected
-      def devise_parameter_sanitizer
-        if resource_class == #{@paperclip_model}
-          #{@strong_paramater_for_paperclip}
-        else
-          super
-        end
-      end), after: 'protect_from_forgery with: :exception'
+  protected
+    def devise_parameter_sanitizer
+      if resource_class == #{@paperclip_model}
+        #{@strong_paramater_for_paperclip}
+      else
+        super
+      end
+    end), after: 'protect_from_forgery with: :exception'
   puts "\n"
 
 # need nothing
