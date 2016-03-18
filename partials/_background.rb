@@ -34,9 +34,9 @@ if @hide_dashboard
 else
   insert_into_file 'config/routes.rb',%(
 
-    # sidekiq dashboard
-    require 'sidekiq/web'
-    mount Sidekiq::Web, at: '/sidekiq'), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
+  # sidekiq dashboard
+  require 'sidekiq/web'
+  mount Sidekiq::Web, at: '/sidekiq'), after: "get '/sitemaps' => redirect(ENV['SITEMAP_HOST']) unless Rails.env.test?"
 end
 run "bundle exec annotate --routes"
 puts "\n"
