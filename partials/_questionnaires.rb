@@ -50,12 +50,12 @@ end
 
 # about background jobs
 @using_background = true if yes?('Use background jobs?([yes or ELSE])')
-@hide_dashboard = true if @using_background && yes?('Hide dashboard from unauthorized users? ([yes or ELSE])')
+@hide_dashboard = true if @using_devise && @using_background && yes?('Hide dashboard from unauthorized users? ([yes or ELSE])')
 @namespace = ask("Specify namespace like 'admin'") if @hide_dashboard
 
 # about paperclip
 @using_paperclip = true if @using_background && yes?('Use paperclip?([yes or ELSE])')
-@add_paperclip_now = true if @using_paperclip && yes?('Add paperclip right now?([yes or ELSE])')
+@add_paperclip_now = true if @using_devise && @using_paperclip && yes?('Add paperclip right now?([yes or ELSE])')
 if @add_paperclip_now
   @paperclip_model_original = ask("  Type model name")
   @paperclip_model = singularized_and_capitalized(@paperclip_model_original)
