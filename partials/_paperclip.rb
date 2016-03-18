@@ -38,7 +38,8 @@ if @add_paperclip_now
     styles: {large: '1500x1000#', small: '600x400#', wide: '1600x900#', ogp: '1200x630#', thumb: '300x300#'},
     path: Settings.s3.common.#{@paperclip_model_downcased}_image_path
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
-  process_in_background :#{@paperclip_column}, url_with_processing: false), before: "end"
+  process_in_background :#{@paperclip_column}, url_with_processing: false
+  ), before: "end"
   gsub_file "config/settings/development.yml", "XXX_image_path: ':class/images/:id/:filename/:style'", "#{@paperclip_model_downcased}_image_path: ':class/images/:id/:filename/:style'"
   gsub_file "config/settings/production.yml", "XXX_image_path: ':class/images/:id/:filename/:style'", "#{@paperclip_model_downcased}_image_path: ':class/images/:id/:filename/:style'"
   gsub_file "config/settings/test.yml", "XXX_image_path: ':class/images/:id/:filename/:style'", "#{@paperclip_model_downcased}_image_path: ':class/images/:id/:filename/:style'"
