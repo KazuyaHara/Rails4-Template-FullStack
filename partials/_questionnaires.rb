@@ -61,7 +61,7 @@ if @add_paperclip_now
   @paperclip_model = singularized_and_capitalized(@paperclip_model_original)
   @paperclip_model_downcased = singularized_and_downcased(@paperclip_model_original)
   @paperclip_resources = pluralized_and_downcased(@paperclip_model_original)
-  if @paperclip_model == @model
+  if @paperclip_model == @model || @paperclip_model == @parent_model
     @paperclip_column = singularized_and_downcased(ask("  Type column name like 'image', 'avatar' or something: "))
   else
     puts "Sorry, there is no model named '#{@paperclip_model}' ..."
