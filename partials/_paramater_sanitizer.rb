@@ -91,3 +91,7 @@ elsif !@using_omniauth && @using_paperclip
 # need nothing
 else
 end
+
+git :add => "."
+git :commit => "-aqm 'add devise paramater sanitizer'"
+puts "\n"
