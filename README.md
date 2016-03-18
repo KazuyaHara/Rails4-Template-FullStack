@@ -7,7 +7,7 @@ This application
 - has annotate, bulletm better_errors & seed_fu that will support your happy coding
 - is integrated with friendly_id, kaminari & paranoia
 
-Plus, other useful gems are on Gemfile and waiting for you!
+Plus, other useful gems are on [Gemfile](https://github.com/KazuyaHara/Rails4-Template-FullStack/blob/master/files/Gemfile) and waiting for you!
 
 ## Installation
 Consider your application name deeply, and then run
@@ -37,7 +37,7 @@ You can use these gems as you needed. Please answer to questions 'yes'.
 #### for background jobs
 - sidekiq
 
-...and more! As for the detail, please check Gemfile.
+...and more! As for the detail, please check [Gemfile](https://github.com/KazuyaHara/Rails4-Template-FullStack/blob/master/files/Gemfile).
 
 ## After Installation
 You should ...
