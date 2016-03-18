@@ -48,4 +48,6 @@ You should ...
 - go to 'circle ci' & 'code climate' and integrate with your remote repository. (as needed)
 
 ## Deployment
-This template contains ```gem 'rails_12factor'``` so simply work with Heroku. It may run with Puma and Postgresql. And also with Redis if you answered 'yes' to the question ```Use background jobs?```.
+This template contains ```gem 'rails_12factor'``` so simply work with Heroku. It may run with Puma and Postgresql.
+
+Your Application needs Redis if you answered 'yes' to the question ```Use background jobs?```. So you have to attach some plugins such as [Redis Cloud](https://elements.heroku.com/addons/rediscloud) or somithing.
